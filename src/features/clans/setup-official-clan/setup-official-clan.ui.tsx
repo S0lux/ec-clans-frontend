@@ -105,9 +105,9 @@ export const SetupOfficialClanForm = () => {
                     <FormControl>
                       <Input
                         placeholder="The roblox group ID of the clan"
-                        onChangeCapture={(e: FormEvent<HTMLInputElement>) =>
-                          setGroupId(e.currentTarget.value)
-                        }
+                        // onChangeCapture={(e: FormEvent<HTMLInputElement>) =>
+                        //   setGroupId(e.currentTarget.value)
+                        // }
                         {...field}
                       />
                     </FormControl>
