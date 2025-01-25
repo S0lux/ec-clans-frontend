@@ -13,6 +13,8 @@ export const useAddBanMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["bannability", variable.discordId],
       });
+
+      queryClient.invalidateQueries({ queryKey: ["bans"] });
     },
   });
 };

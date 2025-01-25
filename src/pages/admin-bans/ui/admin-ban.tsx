@@ -7,6 +7,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/src/shared/ui/components/shadcn/card";
+import { BansTable } from "./bans-table";
 
 export function AdminBansPage() {
   return (
@@ -30,7 +31,9 @@ export function AdminBansPage() {
             You can view all bans here.
           </CardDescription>
         </CardHeader>
-        <CardContent></CardContent>
+        <CardContent>
+          <BansTable />
+        </CardContent>
       </Card>
     </ResponsiveContainer>
   );

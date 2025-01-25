@@ -47,21 +47,19 @@ export const AddBanForm = () => {
   };
 
   const getUserDisplayValue = () => {
-    if (!debouncedDiscordId) return "None";
-    if (isLoading) return "Loading...";
+    if (!debouncedDiscordId) return "";
     if (isError) return "User not found";
     if (banDetails)
       return `${banDetails.data.user.username}#${banDetails.data.user.discriminator}`;
 
-    return "None";
+    return "";
   };
 
   const getStatusDisplayValue = () => {
-    if (isLoading) return "Loading";
     if (banDetails && banDetails.data.isBanned) return "Already banned";
     if (banDetails && !banDetails.data.isBanned) return "Can be banned";
 
-    return "None";
+    return "";
   };
 
   return (
@@ -123,7 +121,7 @@ export const AddBanForm = () => {
               Discord User
             </Label>
             <Input
-              placeholder="None"
+              placeholder={isLoading ? "Loading..." : "Waiting for input..."}
               value={getUserDisplayValue()}
               readOnly
               className="pointer-events-none w-full cursor-not-allowed"
@@ -134,7 +132,7 @@ export const AddBanForm = () => {
               Status
             </Label>
             <Input
-              placeholder="None"
+              placeholder={isLoading ? "Loading..." : "Waiting for input..."}
               value={getStatusDisplayValue()}
               className={cn("pointer-events-none w-full cursor-not-allowed", {
                 "text-green-500": banDetails && !banDetails?.data.isBanned,

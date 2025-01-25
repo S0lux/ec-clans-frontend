@@ -17,3 +17,10 @@ export const AddBanDtoSchema = z.object({
   discordId: z.string(),
   reason: z.string().optional(),
 });
+
+export const BansDtoSchema = z.object({
+  bans: z.array(BanDtoSchema),
+  totalPages: z.number(),
+  pageNumber: z.number(),
+  pageSize: z.number(),
+});

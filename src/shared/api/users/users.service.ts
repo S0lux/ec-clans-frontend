@@ -5,7 +5,7 @@ import { CurrentUserDtoSchema } from "./users.dtos";
 export class UsersService {
   static currentUserQuery() {
     return axiosInstance
-      .get("/v1/users/me")
+      .get("/v1/discord-users/me")
       .then(zodValidate(CurrentUserDtoSchema));
   }
 }

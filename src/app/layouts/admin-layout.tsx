@@ -11,8 +11,8 @@ export default function AdminLayout({
   const pathName = usePathname();
 
   return (
-    <div className="flex w-full flex-col">
-      <ResponsiveContainer className="flex h-10 w-full flex-row bg-neutral-900">
+    <div className="flex h-full w-full flex-col overflow-y-scroll">
+      <ResponsiveContainer className="sticky left-0 top-0 flex h-10 w-full flex-row bg-neutral-900">
         <NavButton text={"CLANS"} active={pathName!.includes("/admin/clans")} />
         <NavButton text={"BANS"} active={pathName!.includes("/admin/bans")} />
       </ResponsiveContainer>

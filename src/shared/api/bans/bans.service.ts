@@ -1,6 +1,6 @@
 import { axiosInstance } from "..";
 import { zodValidate } from "../../lib/axios";
-import { BanDtoSchema, BannabilityDtoSchema } from "./bans.dtos";
+import { BanDtoSchema, BannabilityDtoSchema, BansDtoSchema } from "./bans.dtos";
 import { AddBanDto } from "./bans.types";
 
 export class BansService {
@@ -18,5 +18,16 @@ export class BansService {
 
   static async addBan(data: AddBanDto) {
     return axiosInstance.post(`/v1/bans`, data);
+  }
+
+  static async getBans(pageNumber: number, pageSize: number) {
+    return axiosInstance
+      .get(`/v1/bans`, {
+        params: {
+          page: pageNumber,
+          size: pageSize,
+        },
+      })
+      .then(zodValidate(BansDtoSchema));
   }
 }
