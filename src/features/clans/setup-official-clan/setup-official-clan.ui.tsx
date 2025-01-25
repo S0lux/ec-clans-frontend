@@ -31,9 +31,9 @@ import { GuildQueries } from "@/src/entities/guild/guild.queries";
 
 export const SetupOfficialClanForm = () => {
   const [serverId, setServerId] = useState("");
-  const [groupId, setGroupId] = useState("");
+  //  const [groupId, setGroupId] = useState("");
   const debouncedServerId = useDebounce(serverId, 500);
-  const debouncedGroupId = useDebounce(groupId, 500);
+  //  const debouncedGroupId = useDebounce(groupId, 500);
 
   const {
     data: guildInfo,
