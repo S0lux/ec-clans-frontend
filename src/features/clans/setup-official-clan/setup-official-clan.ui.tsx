@@ -28,18 +28,28 @@ import {
 } from "@/src/shared/ui/components/shadcn/select";
 import { useQuery } from "@tanstack/react-query";
 import { GuildQueries } from "@/src/entities/guild/guild.queries";
+import { RobloxQueries } from "@/src/entities/roblox/roblox.queries";
+import { ToastContainer } from "react-toastify";
 
 export const SetupOfficialClanForm = () => {
   const [serverId, setServerId] = useState("");
-  //  const [groupId, setGroupId] = useState("");
+  const [groupId, setGroupId] = useState("");
   const debouncedServerId = useDebounce(serverId, 500);
-  //  const debouncedGroupId = useDebounce(groupId, 500);
+  const debouncedGroupId = useDebounce(groupId, 500);
 
+  // Discord Guild query
   const {
     data: guildInfo,
     isLoading: isFetchingGuild,
     isError: isGuildError,
   } = useQuery(GuildQueries.getGuildQuery(debouncedServerId));
+
+  // Roblox Group query
+  const {
+    data: groupInfo,
+    isLoading: isFetchingGroup,
+    isError: isGroupError,
+  } = useQuery(RobloxQueries.groupInfoQuery(debouncedGroupId));
 
   const form = useForm<SetupOfficialClan>({
     resolver: zodResolver(SetupOfficialClanSchema),
@@ -56,6 +66,13 @@ export const SetupOfficialClanForm = () => {
     return "";
   };
 
+  const getGroupStatusDisplayText = () => {
+    if (!isFetchingGroup && !isGroupError && groupInfo)
+      return groupInfo.displayName;
+    if (!isFetchingGroup && isGroupError) return "Group does not exist";
+    return "";
+  };
+
   const handleSubmit = async (data: SetupOfficialClan) => {
     console.log(data);
   };
@@ -65,7 +82,7 @@ export const SetupOfficialClanForm = () => {
       <div className="flex h-fit w-full flex-col gap-10 sm:flex-row">
         <Form {...form}>
           <form
-            id="add-ban-form"
+            id="setup-official-clan-form"
             onSubmit={form.handleSubmit(handleSubmit)}
             className="flex h-fit w-full flex-col gap-3"
           >
@@ -105,9 +122,9 @@ export const SetupOfficialClanForm = () => {
                     <FormControl>
                       <Input
                         placeholder="The roblox group ID of the clan"
-                        // onChangeCapture={(e: FormEvent<HTMLInputElement>) =>
-                        //   setGroupId(e.currentTarget.value)
-                        // }
+                        onChangeCapture={(e: FormEvent<HTMLInputElement>) =>
+                          setGroupId(e.currentTarget.value)
+                        }
                         {...field}
                       />
                     </FormControl>
@@ -177,7 +194,10 @@ export const SetupOfficialClanForm = () => {
               Roblox Group
             </Label>
             <Input
-              placeholder="None"
+              placeholder={
+                isFetchingGroup ? "Loading..." : "Waiting for input..."
+              }
+              value={getGroupStatusDisplayText()}
               className={cn(
                 "pointer-events-none w-full cursor-not-allowed",
                 {},
@@ -191,10 +211,23 @@ export const SetupOfficialClanForm = () => {
       <div className="flex flex-row-reverse">
         <Button
           type="submit"
-          form="add-ban-form"
+          disabled={
+            isFetchingGuild ||
+            isFetchingGroup ||
+            isGuildError ||
+            isGroupError ||
+            !form.formState.isValid ||
+            !guildInfo ||
+            !groupInfo
+          }
+          form="setup-official-clan-form"
           className="mt-5 w-24 bg-yellow-700 font-semibold hover:bg-yellow-800"
-        ></Button>
+        >
+          Officialize
+        </Button>
       </div>
+
+      <ToastContainer />
     </>
   );
 };

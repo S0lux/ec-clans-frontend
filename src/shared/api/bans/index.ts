@@ -1,3 +1,3 @@
 export { BansService } from "./bans.service";
-export * as BansDtoSchema from "./bans.dtos";
-export * as BansDtoTypes from "./bans.types";
+export * as BansDtos from "./bans.dtos";
+export * as BansTypes from "./bans.types";
