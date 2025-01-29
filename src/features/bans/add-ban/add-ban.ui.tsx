@@ -20,6 +20,7 @@ import {
 import { Input } from "@/src/shared/ui/components/shadcn/input";
 import { Label } from "@/src/shared/ui/components/shadcn/label";
 import { useAddBanMutation } from "./add-ban.mutation";
+import { ToastContainer } from "react-toastify";
 
 export const AddBanForm = () => {
   const [discordId, setDiscordId] = useState("");
@@ -39,10 +40,11 @@ export const AddBanForm = () => {
       discordId: "",
       reason: "",
     },
+    mode: "onChange",
   });
 
-  const handleSubmit = async (data: AddBanDto) => {
-    banUserMutation.mutateAsync(data);
+  const handleSubmit = (data: AddBanDto) => {
+    banUserMutation.mutate(data);
     form.reset();
   };
 
@@ -150,18 +152,19 @@ export const AddBanForm = () => {
           form="add-ban-form"
           disabled={
             !debouncedDiscordId ||
+            !banDetails ||
             isLoading ||
             isError ||
-            !banDetails ||
             banDetails.data.isBanned ||
             banUserMutation.isPending ||
-            !form.formState.isValid
+            form.formState.errors.reason?.type === "too_big"
           }
           className="mt-5 w-24 bg-yellow-700 font-semibold hover:bg-yellow-800"
         >
           {banUserMutation.isPending ? "Banning..." : "Ban user"}
         </Button>
       </div>
+      <ToastContainer />
     </div>
   );
 };
