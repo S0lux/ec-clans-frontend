@@ -30,6 +30,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GuildQueries } from "@/src/entities/guild/guild.queries";
 import { RobloxQueries } from "@/src/entities/roblox/roblox.queries";
 import { ToastContainer } from "react-toastify";
+import { useSetupOfficialClanMutation } from "./setup-official-clan.mutation";
 
 export const SetupOfficialClanForm = () => {
   const [serverId, setServerId] = useState("");
@@ -50,6 +51,9 @@ export const SetupOfficialClanForm = () => {
     isLoading: isFetchingGroup,
     isError: isGroupError,
   } = useQuery(RobloxQueries.groupInfoQuery(debouncedGroupId));
+
+  // Officialize clan mutation
+  const officializeClan = useSetupOfficialClanMutation();
 
   const form = useForm<SetupOfficialClan>({
     resolver: zodResolver(SetupOfficialClanSchema),
@@ -74,7 +78,7 @@ export const SetupOfficialClanForm = () => {
   };
 
   const handleSubmit = async (data: SetupOfficialClan) => {
-    console.log(data);
+    officializeClan.mutate(data);
   };
 
   return (
@@ -125,6 +129,7 @@ export const SetupOfficialClanForm = () => {
                         onChangeCapture={(e: FormEvent<HTMLInputElement>) =>
                           setGroupId(e.currentTarget.value)
                         }
+                        type="number"
                         {...field}
                       />
                     </FormControl>
@@ -216,6 +221,7 @@ export const SetupOfficialClanForm = () => {
             isFetchingGroup ||
             isGuildError ||
             isGroupError ||
+            officializeClan.isPending ||
             !form.formState.isValid ||
             !guildInfo ||
             !groupInfo
@@ -227,7 +233,7 @@ export const SetupOfficialClanForm = () => {
         </Button>
       </div>
 
-      <ToastContainer />
+      <ToastContainer theme="dark" position="bottom-right" />
     </>
   );
 };
