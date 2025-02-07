@@ -19,7 +19,7 @@ export const addBanDtoSchema = z.object({
 });
 
 export const queryBansDtoSchema = z.object({
-  bans: z.array(banDtoSchema),
+  results: z.array(banDtoSchema),
   totalPages: z.number(),
   pageNumber: z.number(),
   pageSize: z.number(),

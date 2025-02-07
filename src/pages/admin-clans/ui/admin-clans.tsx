@@ -9,6 +9,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/src/shared/ui/components/shadcn/card";
+import { AdminOfficialClanList } from "./admin-official-clans-list";
 
 export const AdminClansPage = () => {
   return (
@@ -24,6 +25,18 @@ export const AdminClansPage = () => {
         </CardHeader>
         <CardContent>
           <SetupOfficialClanForm />
+        </CardContent>
+      </Card>
+
+      <Card className="mt-5 border-none bg-neutral-900">
+        <CardHeader>
+          <CardTitle className="text-foreground">Official clans</CardTitle>
+          <CardDescription className="text-foreground/50">
+            A list of all official clans.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AdminOfficialClanList />
         </CardContent>
       </Card>
     </ResponsiveContainer>

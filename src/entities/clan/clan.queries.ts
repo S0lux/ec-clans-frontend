@@ -7,8 +7,9 @@ export const getClansQuery = (
   name?: string,
 ) => {
   return queryOptions({
-    queryKey: ["clans", pageNumber, pageSize],
-    queryFn: () => ClansService.getClans(pageNumber, pageSize, name),
+    queryKey: ["clans", pageNumber, pageSize, name],
+    queryFn: async () =>
+      (await ClansService.getClans(pageNumber, pageSize, name)).data,
     placeholderData: keepPreviousData,
   });
 };

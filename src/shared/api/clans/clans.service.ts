@@ -1,4 +1,6 @@
+import { ClansDtos } from ".";
 import { axiosInstance } from "..";
+import { zodValidate } from "../../lib/axios";
 import { OfficializeClanDto } from "./clans.types";
 
 export class ClansService {
@@ -7,12 +9,14 @@ export class ClansService {
   }
 
   static async getClans(pageNumber: number, pageSize: number, name?: string) {
-    return axiosInstance.get("/v1/clans", {
-      params: {
-        page: pageNumber,
-        size: pageSize,
-        name,
-      },
-    });
+    return axiosInstance
+      .get("/v1/clans", {
+        params: {
+          page: pageNumber,
+          size: pageSize,
+          name,
+        },
+      })
+      .then(zodValidate(ClansDtos.clanListDtoSchema));
   }
 }

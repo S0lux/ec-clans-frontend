@@ -23,7 +23,7 @@ export const BansTable = () => {
       pagination={pagination}
       setPagination={setPagination}
       pageCount={bansQuery?.data.totalPages || 0}
-      data={bansQuery?.data.bans || []}
+      data={bansQuery?.data.results || []}
     />
   );
 };

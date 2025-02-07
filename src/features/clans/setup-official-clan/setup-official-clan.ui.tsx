@@ -129,7 +129,6 @@ export const SetupOfficialClanForm = () => {
                         onChangeCapture={(e: FormEvent<HTMLInputElement>) =>
                           setGroupId(e.currentTarget.value)
                         }
-                        type="number"
                         {...field}
                       />
                     </FormControl>

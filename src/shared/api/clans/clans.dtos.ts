@@ -23,3 +23,10 @@ export const clanDetailsDtoSchema = z.object({
   totalMembers: z.number(),
   onlineMembers: z.number(),
 });
+
+export const clanListDtoSchema = z.object({
+  results: z.array(clanDetailsDtoSchema),
+  totalPages: z.number(),
+  pageNumber: z.number(),
+  pageSize: z.number(),
+});
