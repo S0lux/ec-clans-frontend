@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const robloxGroupSchema = z.object({
+export const robloxGroupDtoSchema = z.object({
   path: z.string(),
   createTime: z.string(),
   updateTime: z.string(),

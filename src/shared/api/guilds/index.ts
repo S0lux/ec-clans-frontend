@@ -1,1 +1,1 @@
-export { DiscordGuildDtoSchema } from "./guilds.dtos";
+export * as DiscordDtos from "./guilds.dtos";

@@ -1,12 +1,12 @@
 import { z } from "zod";
 import {
-  AddBanDtoSchema,
-  BanDtoSchema,
-  BannabilityDtoSchema,
-  BansDtoSchema,
+  addBanDtoSchema,
+  banDtoSchema,
+  bannabilityDtoSchema,
+  queryBansDtoSchema,
 } from "./bans.dtos";
 
-export type BanDto = z.infer<typeof BanDtoSchema>;
-export type BannabilityDto = z.infer<typeof BannabilityDtoSchema>;
-export type AddBanDto = z.infer<typeof AddBanDtoSchema>;
-export type BansDto = z.infer<typeof BansDtoSchema>;
+export type BanDto = z.infer<typeof banDtoSchema>;
+export type BannabilityDto = z.infer<typeof bannabilityDtoSchema>;
+export type AddBanDto = z.infer<typeof addBanDtoSchema>;
+export type BansDto = z.infer<typeof queryBansDtoSchema>;

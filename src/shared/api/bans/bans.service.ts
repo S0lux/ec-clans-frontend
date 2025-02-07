@@ -1,19 +1,23 @@
 import { axiosInstance } from "..";
 import { zodValidate } from "../../lib/axios";
-import { BanDtoSchema, BannabilityDtoSchema, BansDtoSchema } from "./bans.dtos";
+import {
+  banDtoSchema,
+  bannabilityDtoSchema,
+  queryBansDtoSchema,
+} from "./bans.dtos";
 import { AddBanDto } from "./bans.types";
 
 export class BansService {
   static async getBan(discordId: string) {
     return axiosInstance
       .get(`/v1/bans/${discordId}`)
-      .then(zodValidate(BanDtoSchema));
+      .then(zodValidate(banDtoSchema));
   }
 
   static async getBannability(discordId: string) {
     return axiosInstance
       .get(`/v1/bans/${discordId}/bannability`)
-      .then(zodValidate(BannabilityDtoSchema));
+      .then(zodValidate(bannabilityDtoSchema));
   }
 
   static async addBan(data: AddBanDto) {
@@ -28,6 +32,6 @@ export class BansService {
           size: pageSize,
         },
       })
-      .then(zodValidate(BansDtoSchema));
+      .then(zodValidate(queryBansDtoSchema));
   }
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
-import { officializeClanSchema } from "./clans.dtos";
+import { clanDetailsDtoSchema, officializeClanDtoSchema } from "./clans.dtos";
 
-export type OfficializeClan = z.infer<typeof officializeClanSchema>;
+export type OfficializeClanDto = z.infer<typeof officializeClanDtoSchema>;
+export type ClanDetailsDto = z.infer<typeof clanDetailsDtoSchema>;

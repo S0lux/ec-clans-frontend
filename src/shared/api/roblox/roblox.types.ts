@@ -1,4 +1,4 @@
 import { z } from "zod";
-import { robloxGroupSchema } from "./roblox.dtos";
+import { robloxGroupDtoSchema } from "./roblox.dtos";
 
-export type RobloxGroupSchema = z.infer<typeof robloxGroupSchema>;
+export type RobloxGroupDto = z.infer<typeof robloxGroupDtoSchema>;
