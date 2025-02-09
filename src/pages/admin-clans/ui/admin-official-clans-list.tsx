@@ -7,6 +7,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/src/shared/lib";
+import Link from "next/link";
 
 export const AdminOfficialClanList = ({
   className,
@@ -34,22 +35,21 @@ export const AdminOfficialClanList = ({
         {data && (
           <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {data.results.map((clan) => (
-              <div
-                className="relative flex flex-row items-center gap-2 rounded-md p-2 text-white hover:bg-foreground/20"
-                key={clan.clanId}
-              >
-                <Image
-                  src={
-                    clan.serverLogo ||
-                    "https://placehold.co/400/png?text=No+Logo"
-                  }
-                  alt={clan.name}
-                  width={48}
-                  height={48}
-                  className="rounded-full"
-                />
-                <div>{clan.name}</div>
-              </div>
+              <Link href={`/admin/clans/${clan.clanId}`} key={clan.clanId}>
+                <div className="relative flex flex-row items-center gap-5 rounded-md p-2 text-white hover:bg-foreground/20">
+                  <Image
+                    src={
+                      clan.serverLogo ||
+                      "https://placehold.co/400/png?text=No+Logo"
+                    }
+                    alt={clan.name}
+                    width={48}
+                    height={48}
+                    className="rounded-full"
+                  />
+                  <div>{clan.name}</div>
+                </div>
+              </Link>
             ))}
           </div>
         )}

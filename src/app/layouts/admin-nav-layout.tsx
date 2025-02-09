@@ -3,7 +3,7 @@
 import { NavButton, ResponsiveContainer } from "@/src/shared/ui";
 import { usePathname } from "next/navigation";
 
-export default function AdminLayout({
+export default function AdminNavigationHeaderLayout({
   children,
 }: {
   children: React.ReactNode;
