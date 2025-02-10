@@ -11,6 +11,7 @@ export const officializeClanDtoSchema = z.object({
 export const clanDetailsDtoSchema = z.object({
   clanId: z.string().optional(),
   guildId: z.string(),
+  groupId: z.string(),
   name: z.string(),
   serverLogo: z.string().nullable(),
   serverBanner: z.string().nullable(),

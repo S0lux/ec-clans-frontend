@@ -1,6 +1,5 @@
 "use client";
 
-import { getClansQuery } from "@/src/entities/clan/clan.queries";
 import { Input } from "@/src/shared/ui/components/shadcn/input";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -8,6 +7,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/src/shared/lib";
 import Link from "next/link";
+import { ClansQueries } from "@/src/entities/clan/clan.queries";
 
 export const AdminOfficialClanList = ({
   className,
@@ -18,7 +18,7 @@ export const AdminOfficialClanList = ({
   const debouncedClanName = useDebounce(clanName, 500);
 
   const { data, isLoading, error } = useQuery(
-    getClansQuery(0, 10, debouncedClanName),
+    ClansQueries.getClansQuery(0, 10, debouncedClanName),
   );
 
   return (

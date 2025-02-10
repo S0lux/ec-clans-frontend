@@ -19,4 +19,10 @@ export class ClansService {
       })
       .then(zodValidate(ClansDtos.clanListDtoSchema));
   }
+
+  static async getClan(clanId: string) {
+    return axiosInstance
+      .get(`/v1/clans/${clanId}`)
+      .then(zodValidate(ClansDtos.clanDetailsDtoSchema));
+  }
 }
