@@ -24,3 +24,8 @@ export const queryBansDtoSchema = z.object({
   pageNumber: z.number(),
   pageSize: z.number(),
 });
+
+export const serverBanDtoSchema = z.object({
+  user: baseDiscordUserDtoSchema,
+  isServerBanned: z.boolean(),
+});

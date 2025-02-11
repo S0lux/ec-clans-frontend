@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/src/shared/ui/components/shadcn/data-table";
+import { DataTable } from "@/src/pages/admin-bans/ui/data-table";
 import { BansTableColumns } from "./bans-table-columns";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";

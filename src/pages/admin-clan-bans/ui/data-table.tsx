@@ -4,6 +4,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -16,30 +17,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/shared/ui/components/shadcn/table";
-import { Dispatch, SetStateAction } from "react";
-import { Button } from "./button";
+import { useState } from "react";
+import { Button } from "../../../shared/ui/components/shadcn/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageCount: number;
-  pagination: PaginationState;
-  setPagination: Dispatch<SetStateAction<PaginationState>>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pageCount,
-  pagination,
-  setPagination,
 }: DataTableProps<TData, TValue>) {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    pageCount: pageCount,
+    getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     state: {
       pagination,

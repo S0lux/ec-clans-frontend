@@ -35,7 +35,7 @@ export const AdminOfficialClanList = ({
         {data && (
           <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {data.results.map((clan) => (
-              <Link href={`/admin/clans/${clan.clanId}`} key={clan.clanId}>
+              <Link href={`/admin/clans/${clan.clanId}/info`} key={clan.clanId}>
                 <div className="relative flex flex-row items-center gap-5 rounded-md p-2 text-white hover:bg-foreground/20">
                   <Image
                     src={

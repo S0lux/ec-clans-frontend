@@ -4,6 +4,7 @@ import {
   banDtoSchema,
   bannabilityDtoSchema,
   queryBansDtoSchema,
+  serverBanDtoSchema,
 } from "./bans.dtos";
 import { AddBanDto } from "./bans.types";
 
@@ -33,5 +34,11 @@ export class BansService {
         },
       })
       .then(zodValidate(queryBansDtoSchema));
+  }
+
+  static async getClanBans(clanId: string) {
+    return axiosInstance
+      .get(`/v1/clans/${clanId}/bans`)
+      .then(zodValidate(serverBanDtoSchema.array()));
   }
 }

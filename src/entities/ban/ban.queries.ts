@@ -24,4 +24,12 @@ export class BanQueries {
       placeholderData: keepPreviousData,
     });
   }
+
+  static getClanBansQuery(clanId?: string) {
+    return queryOptions({
+      queryKey: ["clan-bans", clanId],
+      queryFn: async () => (await BansService.getClanBans(clanId!)).data,
+      enabled: !!clanId,
+    });
+  }
 }
