@@ -15,10 +15,11 @@ export class ClansQueries {
     });
   }
 
-  static getClanQuery(clanId: string) {
+  static getClanQuery(clanId?: string) {
     return queryOptions({
       queryKey: ["clan", clanId],
-      queryFn: async () => (await ClansService.getClan(clanId)).data,
+      queryFn: async () => (await ClansService.getClan(clanId!)).data,
+      enabled: !!clanId,
     });
   }
 }

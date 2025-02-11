@@ -17,8 +17,8 @@ export default function AdminClanLayout({
     <div className="mt-10 flex h-full w-full flex-col overflow-y-scroll">
       <ClanDetailsWidget clanId={clanId} />
 
-      <div className="flex flex-row">
-        <div className="w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
+      <div className="flex flex-row gap-2">
+        <div className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
           <ClanNavButton
             href={`/admin/clans/${clanId}/info`}
             icon={Info}

@@ -23,6 +23,7 @@ export const clanDetailsDtoSchema = z.object({
   status: z.string(),
   totalMembers: z.number(),
   onlineMembers: z.number(),
+  owner: baseDiscordUserDtoSchema,
 });
 
 export const clanListDtoSchema = z.object({
