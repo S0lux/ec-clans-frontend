@@ -8,4 +8,14 @@ export class GuildsService {
       .get(`/v1/discord-guilds/${guildId}`)
       .then(zodValidate(discordGuildDtoSchema));
   }
+
+  static async getGuildsQuery(nameFilter?: string) {
+    return axiosInstance
+      .get("/v1/discord-guilds", {
+        params: {
+          name: nameFilter,
+        },
+      })
+      .then(zodValidate(discordGuildDtoSchema.array()));
+  }
 }

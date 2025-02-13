@@ -1,4 +1,5 @@
 import { ClansService } from "@/src/shared/api/clans";
+import { GuildsService } from "@/src/shared/api/guilds/guilds.service";
 import { queryOptions, keepPreviousData } from "@tanstack/react-query";
 
 export class ClansQueries {
@@ -20,6 +21,22 @@ export class ClansQueries {
       queryKey: ["clan", clanId],
       queryFn: async () => (await ClansService.getClan(clanId!)).data,
       enabled: !!clanId,
+    });
+  }
+
+  static getUnofficialClanQuery(guildId?: string) {
+    return queryOptions({
+      queryKey: ["unofficla-clans"],
+      queryFn: async () => (await GuildsService.getGuildQuery(guildId!)).data,
+      enabled: !!guildId,
+    });
+  }
+
+  static getUnofficialClansQuery(nameFilter?: string) {
+    return queryOptions({
+      queryKey: ["unofficla-clans", nameFilter],
+      queryFn: async () =>
+        (await GuildsService.getGuildsQuery(nameFilter)).data,
     });
   }
 }

@@ -41,4 +41,10 @@ export class BansService {
       .get(`/v1/clans/${clanId}/bans`)
       .then(zodValidate(serverBanDtoSchema.array()));
   }
+
+  static async getGuildBans(guildId: string) {
+    return axiosInstance
+      .get(`/v1/discord-guilds/${guildId}/bans`)
+      .then(zodValidate(serverBanDtoSchema.array()));
+  }
 }

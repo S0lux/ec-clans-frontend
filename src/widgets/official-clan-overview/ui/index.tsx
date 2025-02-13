@@ -5,7 +5,7 @@ import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
-export const ClanDetailsWidget = ({ clanId }: { clanId: string }) => {
+export const OfficialClanDetailsWidget = ({ clanId }: { clanId: string }) => {
   const { data, isLoading, error } = useQuery(
     ClansQueries.getClanQuery(clanId),
   );

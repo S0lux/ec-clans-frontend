@@ -32,4 +32,12 @@ export class BanQueries {
       enabled: !!clanId,
     });
   }
+
+  static getGuildBansQuery(guildId?: string) {
+    return queryOptions({
+      queryKey: ["guild-bans", guildId],
+      queryFn: async () => (await BansService.getGuildBans(guildId!)).data,
+      enabled: !!guildId,
+    });
+  }
 }

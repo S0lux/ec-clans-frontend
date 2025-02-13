@@ -1,10 +1,12 @@
 import { ClansService } from "@/src/shared/api/clans";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SetupOfficialClan } from "./setup-official-clan.schema";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 
 export const useSetupOfficialClanMutation = () => {
+  const client = useQueryClient();
+
   return useMutation({
     mutationFn: async (data: SetupOfficialClan) => {
       const numberGroupId = parseInt(data.groupId);
@@ -16,6 +18,7 @@ export const useSetupOfficialClanMutation = () => {
 
     onSuccess: () => {
       toast.success("Clan officialized successfully");
+      client.invalidateQueries({ queryKey: ["clans"] });
     },
 
     onError(error) {

@@ -9,7 +9,7 @@ import {
   CardContent,
 } from "@/src/shared/ui/components/shadcn/card";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { DataTable } from "./data-table";
 import { BansTableColumns } from "./bans-table-columns";
 import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
@@ -17,20 +17,33 @@ import { cn } from "@/src/shared/lib";
 
 export default function AdminClanBansPage() {
   const params = useParams<{ clanId: string }>();
-  const { data, isLoading, error } = useQuery(
-    BanQueries.getClanBansQuery(params?.clanId),
-  );
+  const pathName = usePathname();
+
+  const officialQuery = useQuery({
+    ...BanQueries.getClanBansQuery(params?.clanId),
+    enabled: !!params?.clanId && pathName?.includes("/clans/"),
+  });
+
+  const unOfficialQuery = useQuery({
+    ...BanQueries.getGuildBansQuery(params?.clanId),
+    enabled: !!params?.clanId && pathName?.includes("/unofficial-clans/"),
+  });
 
   if (!params || !params.clanId) {
     return null;
   }
 
+  // Determine which query to use based on the path
+  const { data, isLoading, error } = pathName?.includes("/unofficial-clans/")
+    ? unOfficialQuery
+    : officialQuery;
+
   if (error) {
     return <div>Error loading bans list.</div>;
   }
 
-  const totalBans = data?.length;
-  const syncedBans = data?.filter((ban) => ban.isServerBanned).length;
+  const totalBans = data?.length ?? 0;
+  const syncedBans = data?.filter((ban) => ban.isServerBanned)?.length ?? 0;
 
   return (
     <Card className="w-full rounded-md border-none bg-neutral-900 md:mr-12 lg:mr-24 xl:mr-36 2xl:mr-64">
@@ -40,10 +53,8 @@ export default function AdminClanBansPage() {
           Compare this clan&apos;s bans with ECCD global bans list
         </CardDescription>
       </CardHeader>
-      <CardContent className="">
-        {isLoading && (
-          <Skeleton className="h-96 w-full bg-foreground/5"></Skeleton>
-        )}
+      <CardContent>
+        {isLoading && <Skeleton className="h-96 w-full bg-foreground/5" />}
         {data && (
           <div className="flex flex-col gap-5">
             <span className="ml-auto text-foreground">
@@ -51,7 +62,7 @@ export default function AdminClanBansPage() {
               <span
                 className={cn("font-semibold", {
                   "text-green-500": syncedBans === totalBans,
-                  "text-yellow-500": syncedBans! < totalBans!,
+                  "text-yellow-500": syncedBans < totalBans,
                 })}
               >
                 {syncedBans}/{totalBans}
