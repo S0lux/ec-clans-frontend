@@ -11,4 +11,14 @@ export class UserQueries {
       },
     });
   }
+
+  static currentUserGuildsQuery() {
+    return queryOptions({
+      queryKey: ["current-user-guilds"],
+      queryFn: async () => {
+        const response = await UsersService.getCurrentUserGuilds();
+        return response.data;
+      },
+    });
+  }
 }
