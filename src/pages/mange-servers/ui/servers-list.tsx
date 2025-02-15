@@ -3,6 +3,7 @@
 import { UserQueries } from "@/src/entities/user/user.queries";
 import { cn } from "@/src/shared/lib";
 import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
+import ErrorDisplay from "@/src/shared/ui/error-display";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,14 +16,14 @@ export default function ServerList({ className }: { className?: string }) {
   if (isLoading)
     return (
       <div className={cn("flex flex-row gap-5", className)}>
-        <Skeleton className="h-96 w-full bg-foreground/5" />
+        <Skeleton className="h-48 w-full bg-foreground/5" />
       </div>
     );
 
   if (error)
     return (
       <div className={cn("flex flex-row gap-5", className)}>
-        Error loading server list: {error.message}
+        <ErrorDisplay error={error} />
       </div>
     );
 
