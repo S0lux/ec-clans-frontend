@@ -15,6 +15,8 @@ import {
   SelectTrigger,
 } from "@/src/shared/ui/components/shadcn/select";
 import { SelectValue } from "@radix-ui/react-select";
+import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
+import ErrorDisplay from "@/src/shared/ui/error-display";
 
 export const AdminClanList = ({ className }: { className?: string }) => {
   const [clanName, setClanName] = useState("");
@@ -23,58 +25,39 @@ export const AdminClanList = ({ className }: { className?: string }) => {
   );
   const debouncedClanName = useDebounce(clanName, 500);
 
-  const officialQuery = useQuery({
-    ...ClansQueries.getClansQuery(0, 10, debouncedClanName),
-    enabled: queryType === "official",
-  });
-
-  const unofficialQuery = useQuery({
-    ...ClansQueries.getUnofficialClansQuery(debouncedClanName),
-    enabled: queryType === "unofficial",
-  });
-
-  // Get the active query based on queryType
-  const activeQuery =
-    queryType === "official" ? officialQuery : unofficialQuery;
+  const clanQuery = useQuery(
+    ClansQueries.getClansQuery(0, 10, queryType, debouncedClanName),
+  );
 
   const renderClanList = () => {
-    if (queryType === "official" && officialQuery.data) {
-      return officialQuery.data.results.map((clan) => (
-        <Link href={`/admin/clans/${clan.clanId}/info`} key={clan.clanId}>
-          <div className="relative flex flex-row items-center gap-5 rounded-md p-2 text-white hover:bg-foreground/20">
-            <Image
-              src={
-                clan.serverLogo || "https://placehold.co/400/png?text=No+Logo"
-              }
-              alt={clan.name}
-              width={48}
-              height={48}
-              className="rounded-full"
-            />
-            <div>{clan.name}</div>
-          </div>
-        </Link>
-      ));
-    }
+    if (clanQuery.isLoading)
+      return <Skeleton className="col-span-full h-48 w-full bg-foreground/5" />;
 
-    if (queryType === "unofficial" && unofficialQuery.data) {
-      return unofficialQuery.data.map((clan) => (
-        <Link href={`/admin/unofficial-clans/${clan.id}/bans`} key={clan.id}>
-          <div className="relative flex flex-row items-center gap-5 rounded-md p-2 text-white hover:bg-foreground/20">
-            <Image
-              src={clan.iconUrl || "https://placehold.co/400/png?text=No+Logo"}
-              alt={clan.name}
-              width={48}
-              height={48}
-              className="rounded-full"
-            />
-            <div>{clan.name}</div>
-          </div>
-        </Link>
-      ));
-    }
+    if (clanQuery.isError)
+      return <ErrorDisplay error={clanQuery.error} className="col-span-full" />;
 
-    return null;
+    if (clanQuery.data)
+      return (
+        <>
+          {clanQuery.data?.results.map((clan) => (
+            <Link
+              href={`/admin/clans/${clan.serverId}/info`}
+              key={clan.serverId}
+            >
+              <div className="relative flex flex-row items-center gap-5 rounded-md p-2 text-white hover:bg-foreground/20">
+                <Image
+                  src={clan.serverIcon}
+                  alt={clan.serverName}
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                />
+                <div>{clan.serverName}</div>
+              </div>
+            </Link>
+          ))}
+        </>
+      );
   };
 
   return (
@@ -103,19 +86,8 @@ export const AdminClanList = ({ className }: { className?: string }) => {
         </Select>
       </div>
 
-      <div>
-        {activeQuery.isLoading && (
-          <div className="text-neutral-500">Loading...</div>
-        )}
-        {activeQuery.error && (
-          <div className="text-red-500">
-            Error: {(activeQuery.error as Error).message}
-          </div>
-        )}
-
-        <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {renderClanList()}
-        </div>
+      <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {renderClanList()}
       </div>
     </div>
   );

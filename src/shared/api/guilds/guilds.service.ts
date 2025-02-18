@@ -1,12 +1,12 @@
 import { axiosInstance } from "..";
 import { zodValidate } from "../../lib/axios";
-import { discordGuildDtoSchema } from "./guilds.dtos";
+import { clanGuildDtoSchema } from "./guilds.dtos";
 
 export class GuildsService {
   static async getGuildQuery(guildId: string) {
     return axiosInstance
       .get(`/v1/discord-guilds/${guildId}`)
-      .then(zodValidate(discordGuildDtoSchema));
+      .then(zodValidate(clanGuildDtoSchema));
   }
 
   static async getGuildsQuery(nameFilter?: string) {
@@ -16,6 +16,6 @@ export class GuildsService {
           name: nameFilter,
         },
       })
-      .then(zodValidate(discordGuildDtoSchema.array()));
+      .then(zodValidate(clanGuildDtoSchema.array()));
   }
 }

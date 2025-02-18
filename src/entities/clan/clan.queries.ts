@@ -6,12 +6,20 @@ export class ClansQueries {
   static getClansQuery(
     pageNumber: number,
     pageSize: number = 10,
-    name?: string,
+    statusFilter: "official" | "unofficial",
+    nameFilter?: string,
   ) {
     return queryOptions({
-      queryKey: ["clans", pageNumber, pageSize, name],
+      queryKey: ["clans", pageNumber, pageSize, nameFilter, statusFilter],
       queryFn: async () =>
-        (await ClansService.getClans(pageNumber, pageSize, name)).data,
+        (
+          await ClansService.getClans(
+            pageNumber,
+            pageSize,
+            statusFilter,
+            nameFilter,
+          )
+        ).data,
       placeholderData: keepPreviousData,
     });
   }
@@ -26,7 +34,7 @@ export class ClansQueries {
 
   static getUnofficialClanQuery(guildId?: string) {
     return queryOptions({
-      queryKey: ["unofficla-clans"],
+      queryKey: ["unofficial-clans"],
       queryFn: async () => (await GuildsService.getGuildQuery(guildId!)).data,
       enabled: !!guildId,
     });

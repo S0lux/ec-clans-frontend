@@ -1,6 +1,7 @@
 import { AVAIABLE_FACTIONS } from "@/src/features/clans/setup-official-clan/setup-official-clan.schema";
 import { z } from "zod";
 import { baseDiscordUserDtoSchema } from "../users/users.dtos";
+import { clanGuildDtoSchema } from "../guilds/guilds.dtos";
 
 export const officializeClanDtoSchema = z.object({
   serverId: z.string().nonempty(),
@@ -8,27 +9,31 @@ export const officializeClanDtoSchema = z.object({
   mainFaction: z.enum(AVAIABLE_FACTIONS),
 });
 
-export const clanDetailsDtoSchema = z.object({
-  clanId: z.string().optional(),
-  guildId: z.string(),
-  groupId: z.string(),
-  name: z.string(),
-  serverLogo: z.string().nullable(),
-  serverBanner: z.string().nullable(),
-  shortDescription: z.string().optional().nullable(),
-  longDescription: z.string().optional().nullable(),
-  mainFaction: z.string(),
-  overseers: z.array(baseDiscordUserDtoSchema),
-  inviteCode: z.string().optional(),
-  status: z.string(),
-  totalMembers: z.number(),
-  onlineMembers: z.number(),
-  owner: baseDiscordUserDtoSchema,
+const unofficialClanDtoSchema = z.object({
+  status: z.literal("UNOFFICIAL"),
 });
 
-export const clanListDtoSchema = z.object({
-  results: z.array(clanDetailsDtoSchema),
+const officialClanDtoSchema = z.object({
+  status: z.literal("OFFICIAL"),
+  mainFaction: z.union([
+    z.literal("redcliff"),
+    z.literal("korblox"),
+    z.literal("overseer"),
+    z.literal("empyrean"),
+  ]),
+  groupId: z.string(),
+  longDescription: z.string().optional().nullable(),
+  shortDescription: z.string().optional().nullable(),
+  overseers: z.array(baseDiscordUserDtoSchema),
+});
+
+export const clanDtoSchema = clanGuildDtoSchema.and(
+  z.union([officialClanDtoSchema, unofficialClanDtoSchema]),
+);
+
+export const clansListDtoSchema = z.object({
   totalPages: z.number(),
   pageNumber: z.number(),
   pageSize: z.number(),
+  results: clanDtoSchema.array(),
 });

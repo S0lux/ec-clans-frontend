@@ -43,42 +43,53 @@ export default function AdminClanInfoPage() {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-[auto,1fr] items-center gap-5 text-foreground/80">
-        {/* Clan ID */}
-        <span className="text-nowrap">Clan ID:</span>
-        <Input value={params.clanId} disabled />
-
         {/* Guild ID */}
-        <span className="text-nowrap">Guild ID:</span>
-        <Input value={data?.guildId} disabled />
+        <span className="text-nowrap">Server ID:</span>
+        <Input value={data?.serverId} disabled />
 
         {/* Roblox Group ID */}
         <span className="text-nowrap">Group ID:</span>
-        <Input value={data?.groupId} disabled />
+        <Input
+          value={data?.status == "OFFICIAL" ? data.groupId : "UNOFFICIAL"}
+          disabled
+        />
 
         {/* Short Description */}
         <span className="text-nowrap">Short Description:</span>
         <Textarea
-          value={data?.shortDescription || "No description provided"}
+          value={
+            data?.status == "OFFICIAL"
+              ? data.shortDescription || "No description provided"
+              : "UNOFFICIAL"
+          }
           disabled
         />
 
         {/* Long Description */}
         <span className="text-nowrap">Long Description:</span>
         <Textarea
-          value={data?.longDescription || "No description provided"}
+          value={
+            data?.status == "OFFICIAL"
+              ? data.longDescription || "No description provided"
+              : "UNOFFICIAL"
+          }
           disabled
         />
 
         {/* Invite */}
         <span className="text-nowrap">Invite:</span>
         <div className="flex h-9 items-center">
-          <Link
-            href={`https://discord.gg/${data?.inviteCode}`}
-            className="text-blue-500"
-            target="_blank"
-          >
-            https://discord.gg/{data?.inviteCode}
-          </Link>
+          {data?.status == "OFFICIAL" ? (
+            <Link
+              href={`https://discord.gg/${data?.serverInvite}`}
+              className="text-blue-500"
+              target="_blank"
+            >
+              https://discord.gg/{data?.serverInvite}
+            </Link>
+          ) : (
+            "UNOFFICIAL"
+          )}
         </div>
       </CardContent>
     </Card>

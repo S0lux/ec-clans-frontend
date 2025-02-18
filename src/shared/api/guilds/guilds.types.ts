@@ -1,4 +1,4 @@
 import { z } from "zod";
-import { discordGuildDtoSchema } from "./guilds.dtos";
+import { clanGuildDtoSchema } from "./guilds.dtos";
 
-export type DiscordGuildDto = z.infer<typeof discordGuildDtoSchema>;
+export type DiscordGuildDto = z.infer<typeof clanGuildDtoSchema>;

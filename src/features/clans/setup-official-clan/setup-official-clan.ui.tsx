@@ -65,7 +65,8 @@ export const SetupOfficialClanForm = () => {
   });
 
   const getGuildStatusDisplayText = () => {
-    if (!isFetchingGuild && !isGuildError && guildInfo) return guildInfo.name;
+    if (!isFetchingGuild && !isGuildError && guildInfo)
+      return guildInfo.serverName;
     if (!isFetchingGuild && isGuildError) return "Bot not in server";
     return "";
   };

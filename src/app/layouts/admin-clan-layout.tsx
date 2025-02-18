@@ -1,13 +1,15 @@
 "use client";
 
 import { ReactNode } from "react";
-import { useParams, usePathname } from "next/navigation";
 import { Gavel, Info, LucideIcon, ScanEye } from "lucide-react";
 import ClanNavButton from "@/src/shared/ui/clan-nav-button";
-import { OfficialClanDetailsWidget } from "@/src/widgets/official-clan-overview/ui";
-import { UnOfficialClanDetailsWidget } from "@/src/widgets/unofficial-clan-overview/ui";
+import { ClanOverviewCard } from "@/src/widgets/clan-overview-card/ui";
+import { useQuery } from "@tanstack/react-query";
+import { ClansQueries } from "@/src/entities/clan/clan.queries";
+import { useParams, usePathname } from "next/navigation";
+import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 
-type ClanPathType = "clans" | "unofficial-clans";
+type ClanPathType = "OFFICIAL" | "UNOFFICIAL";
 
 interface NavItem {
   href: string;
@@ -18,7 +20,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
-  clans: [
+  OFFICIAL: [
     {
       href: "info",
       icon: Info,
@@ -41,13 +43,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       unavailableMessage: "",
     },
   ],
-  "unofficial-clans": [
+  UNOFFICIAL: [
     {
       href: "info",
       icon: Info,
       label: "Information",
-      isAvailable: false,
-      unavailableMessage: "This feature is only for official clans",
+      isAvailable: true,
+      unavailableMessage: "",
     },
     {
       href: "overseers",
@@ -68,40 +70,42 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
 
 export default function AdminClanLayout({ children }: { children: ReactNode }) {
   const { clanId } = useParams<{ clanId: string }>()!;
+  const query = useQuery(ClansQueries.getClanQuery(clanId));
   const pathName = usePathname();
 
-  if (!clanId || !pathName) {
-    throw new Error("Missing required route parameters");
-  }
+  const renderClanNavMenu = () => {
+    if (query.isLoading) {
+      return <Skeleton className="h-36 w-full bg-foreground/5" />;
+    }
 
-  const clanPath = pathName.includes("/unofficial-clans/")
-    ? "unofficial-clans"
-    : "clans";
-
-  const ClanDetails =
-    clanPath === "clans"
-      ? OfficialClanDetailsWidget
-      : UnOfficialClanDetailsWidget;
-
-  return (
-    <div className="mt-10 flex h-full w-full flex-col overflow-y-scroll">
-      <ClanDetails clanId={clanId} />
-
-      <div className="flex flex-row gap-2">
-        <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
-          {NAV_ITEMS[clanPath].map(
+    if (query.data) {
+      return (
+        <>
+          {NAV_ITEMS[query.data.status].map(
             ({ href, icon: Icon, label, isAvailable, unavailableMessage }) => (
               <ClanNavButton
                 key={href}
-                href={`/admin/${clanPath}/${clanId}/${href}`}
+                href={`/admin/clans/${clanId}/${href}`}
                 icon={Icon}
                 label={label}
-                isActive={pathName.includes(`${clanId}/${href}`)}
+                isActive={pathName!.includes(`${clanId}/${href}`)}
                 isAvailable={isAvailable}
                 unavailableMessage={unavailableMessage}
               />
             ),
           )}
+        </>
+      );
+    }
+  };
+
+  return (
+    <div className="mt-10 flex h-full w-full flex-col overflow-y-scroll">
+      <ClanOverviewCard clanId={clanId} />
+
+      <div className="flex flex-row gap-2">
+        <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
+          {renderClanNavMenu()}
         </nav>
         {children}
       </div>

@@ -8,21 +8,27 @@ export class ClansService {
     return axiosInstance.post("/v1/clans", body);
   }
 
-  static async getClans(pageNumber: number, pageSize: number, name?: string) {
+  static async getClans(
+    pageNumber: number,
+    pageSize: number,
+    statusFilter: "official" | "unofficial",
+    nameFilter?: string,
+  ) {
     return axiosInstance
       .get("/v1/clans", {
         params: {
-          page: pageNumber,
-          size: pageSize,
-          name,
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+          nameFilter: nameFilter,
+          statusFilter: statusFilter,
         },
       })
-      .then(zodValidate(ClansDtos.clanListDtoSchema));
+      .then(zodValidate(ClansDtos.clansListDtoSchema));
   }
 
   static async getClan(clanId: string) {
     return axiosInstance
       .get(`/v1/clans/${clanId}`)
-      .then(zodValidate(ClansDtos.clanDetailsDtoSchema));
+      .then(zodValidate(ClansDtos.clanDtoSchema));
   }
 }
