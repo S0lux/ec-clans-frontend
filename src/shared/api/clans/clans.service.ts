@@ -1,4 +1,4 @@
-import { ClansDtos } from ".";
+import { ClansDtos, ClansTypes } from ".";
 import { axiosInstance } from "..";
 import { zodValidate } from "../../lib/axios";
 import { OfficializeClanDto } from "./clans.types";
@@ -30,5 +30,12 @@ export class ClansService {
     return axiosInstance
       .get(`/v1/clans/${clanId}`)
       .then(zodValidate(ClansDtos.clanDtoSchema));
+  }
+
+  static async updateDescriptions(
+    clanId: string,
+    body: ClansTypes.UpdateClanDescriptionsDto,
+  ) {
+    return axiosInstance.patch(`/v1/clans/${clanId}/descriptions`, body);
   }
 }

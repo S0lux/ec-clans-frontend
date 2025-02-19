@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/manage/:serverId",
+        destination: "/manage/:serverId/info",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

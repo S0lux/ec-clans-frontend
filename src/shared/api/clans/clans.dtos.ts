@@ -37,3 +37,8 @@ export const clansListDtoSchema = z.object({
   pageSize: z.number(),
   results: clanDtoSchema.array(),
 });
+
+export const updateClanDescriptionsDtoSchema = z.object({
+  shortDescription: z.string().max(256),
+  longDescription: z.string().max(2560),
+});

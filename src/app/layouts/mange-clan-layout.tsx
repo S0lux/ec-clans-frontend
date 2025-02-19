@@ -1,13 +1,19 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Gavel, Info, LoaderCircle, LucideIcon, ScanEye } from "lucide-react";
+import {
+  Gavel,
+  Info,
+  LoaderCircle,
+  LucideIcon,
+  MailWarning,
+  ScanEye,
+} from "lucide-react";
 import ClanNavButton from "@/src/shared/ui/clan-nav-button";
 import { ClanOverviewCard } from "@/src/widgets/clan-overview-card/ui";
 import { useQuery } from "@tanstack/react-query";
 import { ClansQueries } from "@/src/entities/clan/clan.queries";
 import { useParams, usePathname } from "next/navigation";
-import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 
 type ClanPathType = "OFFICIAL" | "UNOFFICIAL";
 
@@ -36,6 +42,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       unavailableMessage: "This feature is being worked on",
     },
     {
+      href: "strikes",
+      icon: MailWarning,
+      label: "Strikes",
+      isAvailable: false,
+      unavailableMessage: "This feature is being worked on",
+    },
+    {
       href: "bans",
       icon: Gavel,
       label: "Bans",
@@ -59,6 +72,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       unavailableMessage: "This feature is only for official clans",
     },
     {
+      href: "strikes",
+      icon: MailWarning,
+      label: "Strikes",
+      isAvailable: false,
+      unavailableMessage: "This feature is only for official clans",
+    },
+    {
       href: "bans",
       icon: Gavel,
       label: "Bans",
@@ -68,9 +88,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
   ],
 };
 
-export default function AdminClanLayout({ children }: { children: ReactNode }) {
-  const { clanId } = useParams<{ clanId: string }>()!;
-  const query = useQuery(ClansQueries.getClanQuery(clanId));
+export default function ManageClanLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const { serverId } = useParams<{ serverId: string }>()!;
+  const query = useQuery(ClansQueries.getClanQuery(serverId));
   const pathName = usePathname();
 
   const renderClanNavMenu = () => {
@@ -89,10 +113,10 @@ export default function AdminClanLayout({ children }: { children: ReactNode }) {
             ({ href, icon: Icon, label, isAvailable, unavailableMessage }) => (
               <ClanNavButton
                 key={href}
-                href={`/admin/clans/${clanId}/${href}`}
+                href={`/manage/${serverId}/${href}`}
                 icon={Icon}
                 label={label}
-                isActive={pathName!.includes(`${clanId}/${href}`)}
+                isActive={pathName!.includes(`${serverId}/${href}`)}
                 isAvailable={isAvailable}
                 unavailableMessage={unavailableMessage}
               />
@@ -105,12 +129,14 @@ export default function AdminClanLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="mt-10 flex h-full w-full flex-col overflow-y-scroll">
-      <ClanOverviewCard clanId={clanId} />
+      <ClanOverviewCard clanId={serverId} />
 
       <div className="flex flex-row gap-2">
-        <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
-          {renderClanNavMenu()}
-        </nav>
+        {!query.isError && (
+          <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
+            {renderClanNavMenu()}
+          </nav>
+        )}
         {children}
       </div>
     </div>

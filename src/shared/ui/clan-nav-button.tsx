@@ -52,10 +52,8 @@ export const ClanNavButton = ({
           <Tooltip>
             <TooltipTrigger className="w-full cursor-not-allowed text-left">
               <div
-                className={`flex w-full flex-row items-center ${
-                  isActive
-                    ? "bg-foreground/10"
-                    : "text-neutral-500 hover:bg-foreground/5"
+                className={`flex w-full flex-row items-center text-neutral-700 ${
+                  isActive ? "bg-foreground/10" : "text-neutral-500"
                 }`}
               >
                 <Link
