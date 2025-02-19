@@ -7,7 +7,6 @@ import { ClanOverviewCard } from "@/src/widgets/clan-overview-card/ui";
 import { useQuery } from "@tanstack/react-query";
 import { ClansQueries } from "@/src/entities/clan/clan.queries";
 import { useParams, usePathname } from "next/navigation";
-import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 
 type ClanPathType = "OFFICIAL" | "UNOFFICIAL";
 
