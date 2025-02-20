@@ -47,4 +47,13 @@ export class ClansQueries {
         (await GuildsService.getGuildsQuery(nameFilter)).data,
     });
   }
+
+  static getClanPermissionsQuery(serverId?: string) {
+    return queryOptions({
+      queryKey: ["permissions", serverId],
+      queryFn: async () =>
+        (await ClansService.getClanPermissions(serverId!)).data,
+      enabled: !!serverId,
+    });
+  }
 }

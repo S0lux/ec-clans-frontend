@@ -21,7 +21,7 @@ export const BansTable = () => {
     <DataTable
       columns={BansTableColumns}
       pagination={pagination}
-      setPagination={setPagination}
+      setPaginationAction={setPagination}
       pageCount={bansQuery?.data.totalPages || 0}
       data={bansQuery?.data.results || []}
     />

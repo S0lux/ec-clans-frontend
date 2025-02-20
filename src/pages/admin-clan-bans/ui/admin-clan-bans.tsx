@@ -9,34 +9,18 @@ import {
   CardContent,
 } from "@/src/shared/ui/components/shadcn/card";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DataTable } from "./data-table";
 import { BansTableColumns } from "./bans-table-columns";
 import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 import { cn } from "@/src/shared/lib";
 
 export default function AdminClanBansPage() {
-  const params = useParams<{ clanId: string }>();
-  const pathName = usePathname();
+  const params = useParams<{ clanId: string }>()!;
 
-  const officialQuery = useQuery({
-    ...BanQueries.getClanBansQuery(params?.clanId),
-    enabled: !!params?.clanId && pathName?.includes("/clans/"),
-  });
-
-  const unOfficialQuery = useQuery({
-    ...BanQueries.getGuildBansQuery(params?.clanId),
-    enabled: !!params?.clanId && pathName?.includes("/unofficial-clans/"),
-  });
-
-  if (!params || !params.clanId) {
-    return null;
-  }
-
-  // Determine which query to use based on the path
-  const { data, isLoading, error } = pathName?.includes("/unofficial-clans/")
-    ? unOfficialQuery
-    : officialQuery;
+  const { data, isLoading, error } = useQuery(
+    BanQueries.getClanBansQuery(params.clanId),
+  );
 
   if (error) {
     return <div>Error loading bans list.</div>;

@@ -133,11 +133,13 @@ export default function ManageClanLayout({
 
       <div className="flex flex-row gap-2">
         {!query.isError && (
-          <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
-            {renderClanNavMenu()}
-          </nav>
+          <>
+            <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
+              {renderClanNavMenu()}
+            </nav>
+            {children}
+          </>
         )}
-        {children}
       </div>
     </div>
   );

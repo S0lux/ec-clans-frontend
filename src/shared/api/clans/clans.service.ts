@@ -38,4 +38,10 @@ export class ClansService {
   ) {
     return axiosInstance.patch(`/v1/clans/${clanId}/descriptions`, body);
   }
+
+  static async getClanPermissions(serverId: string) {
+    return axiosInstance
+      .get(`/v1/permissions/${serverId}`)
+      .then(zodValidate(ClansDtos.clanPermissionsDtoSchema));
+  }
 }
