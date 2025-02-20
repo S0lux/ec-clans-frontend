@@ -18,6 +18,7 @@ import { Avatar, AvatarImage } from "@/src/shared/ui/components/shadcn/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { UserQueries } from "@/src/entities/user/user.queries";
 import { authClient } from "@/src/shared/lib/better-auth";
+import Link from "next/link";
 
 const handleLogin = async () => {
   await authClient.signIn.social({
@@ -44,11 +45,12 @@ export const Header = ({ className }: { className?: string }) => {
         className,
       )}
     >
-      <TitleWithIcon
-        title="Clans"
-        icon={<Swords color="orange" fill="orange" size={28} />}
-        className="flex-1"
-      />
+      <Link href="/" className="flex-1">
+        <TitleWithIcon
+          title="Clans"
+          icon={<Swords color="orange" fill="orange" size={28} />}
+        />
+      </Link>
 
       {isLoading && (
         <>

@@ -7,20 +7,36 @@ import ErrorDisplay from "@/src/shared/ui/error-display";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
-export const ClanOverviewCard = ({ clanId }: { clanId: string }) => {
+export const ClanOverviewCard = ({
+  clanId,
+  className,
+}: {
+  clanId: string;
+  className?: string;
+}) => {
   const { data, isLoading, error } = useQuery(
     ClansQueries.getClanQuery(clanId),
   );
 
   if (error)
     return (
-      <div className="relative mb-10 flex flex-row gap-5 rounded-md bg-neutral-900 md:mx-12 lg:mx-24 xl:mx-36 2xl:mx-64">
+      <div
+        className={cn(
+          "relative mb-10 flex flex-row gap-5 rounded-md bg-neutral-900 md:mx-12 lg:mx-24 xl:mx-36 2xl:mx-64",
+          className,
+        )}
+      >
         <ErrorDisplay error={error} className="h-36" />
       </div>
     );
 
   return (
-    <div className="relative mb-10 flex h-fit flex-row gap-5 rounded-md bg-neutral-900 p-3 md:mx-12 lg:mx-24 xl:mx-36 2xl:mx-64">
+    <div
+      className={cn(
+        "relative mb-10 flex h-fit flex-row gap-5 rounded-md bg-neutral-900 p-3 md:mx-12 lg:mx-24 xl:mx-36 2xl:mx-64",
+        className,
+      )}
+    >
       {isLoading && (
         <Skeleton className="aspect-square h-[116px] w-[116px] rounded-full bg-foreground/10" />
       )}

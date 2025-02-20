@@ -95,3 +95,8 @@ export const clanPermissionsDtoSchema = z.object({
   SendPolls: z.boolean().optional(),
   UseExternalApps: z.boolean().optional(),
 });
+
+export const clanBansResultDtoSchema = z.object({
+  bannedUsers: z.string().array(),
+  failedUsers: z.string().array(),
+});

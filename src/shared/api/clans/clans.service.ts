@@ -44,4 +44,10 @@ export class ClansService {
       .get(`/v1/permissions/${serverId}`)
       .then(zodValidate(ClansDtos.clanPermissionsDtoSchema));
   }
+
+  static async synchronizeClanBans(serverId: string) {
+    return axiosInstance
+      .post(`/v1/clans/${serverId}/bans/sync`)
+      .then(zodValidate(ClansDtos.clanBansResultDtoSchema));
+  }
 }

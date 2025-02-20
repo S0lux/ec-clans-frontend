@@ -105,7 +105,7 @@ export default function ManageClanInfoPage() {
           {/* Short Description */}
           <span className="text-nowrap">Short Description:</span>
           <Textarea
-            maxLength={256}
+            maxLength={64}
             defaultValue={oldShortDescription}
             onChange={(e) => setShortDescription(e.target.value)}
             placeholder="No description provided"

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  clanBansResultDtoSchema,
   clanDtoSchema,
   clanPermissionsDtoSchema,
   clansListDtoSchema,
@@ -14,3 +15,4 @@ export type UpdateClanDescriptionsDto = z.infer<
   typeof updateClanDescriptionsDtoSchema
 >;
 export type ClanPermissionsDto = z.infer<typeof clanPermissionsDtoSchema>;
+export type ClanBansResultDto = z.infer<typeof clanBansResultDtoSchema>;

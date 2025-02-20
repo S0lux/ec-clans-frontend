@@ -43,7 +43,7 @@ export default function ServerList({ className }: { className?: string }) {
                 alt={`${guild.name} logo`}
                 width={128}
                 height={128}
-                className="rounded-md"
+                className="rounded-md bg-neutral-800"
               />
 
               <div className="absolute inset-0 flex items-center justify-center rounded-md bg-black/80 opacity-0 transition-opacity duration-200 group-hover:opacity-100">

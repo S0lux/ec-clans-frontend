@@ -17,10 +17,17 @@ import { BanQueries } from "@/src/entities/ban/ban.queries";
 import { Button } from "@/src/shared/ui/components/shadcn/button";
 import { ClansQueries } from "@/src/entities/clan/clan.queries";
 import ErrorDisplay from "@/src/shared/ui/error-display";
+import { useSynchronizeBans } from "@/src/features/clans/synchronize-bans/synchronize-bans.mutation";
+import { useCallback, useState } from "react";
 
 export default function ManageClanBansPage() {
   const params = useParams<{ serverId: string }>()!;
+
   const bansQuery = useQuery(BanQueries.getClanBansQuery(params.serverId));
+  const synchronizeBans = useSynchronizeBans();
+
+  const [failedBans, setFailedBans] = useState<string[]>([]);
+
   const permissionsQuery = useQuery(
     ClansQueries.getClanPermissionsQuery(params.serverId),
   );
@@ -28,6 +35,16 @@ export default function ManageClanBansPage() {
   const totalBans = bansQuery.data?.length || 0;
   const syncedBans =
     bansQuery.data?.filter((ban) => ban.isServerBanned)?.length || 0;
+
+  const handleSynchronizeBans = useCallback(async () => {
+    try {
+      const result = await synchronizeBans.mutateAsync({
+        serverId: params.serverId,
+      });
+
+      setFailedBans(result.failedUsers);
+    } catch {}
+  }, [params.serverId, synchronizeBans]);
 
   if (
     permissionsQuery.data &&
@@ -56,7 +73,11 @@ export default function ManageClanBansPage() {
         {bansQuery.data && (
           <div className="flex flex-col gap-5">
             <div className="flex w-full flex-row">
-              <Button className="bg-yellow-700 font-semibold hover:bg-yellow-800">
+              <Button
+                className="bg-yellow-700 font-semibold hover:bg-yellow-800"
+                onClick={() => handleSynchronizeBans()}
+                disabled={synchronizeBans.isPending}
+              >
                 Sync All
               </Button>
               <span className="ml-auto text-foreground">
@@ -71,6 +92,15 @@ export default function ManageClanBansPage() {
                 </span>
               </span>
             </div>
+            {failedBans.length > 0 && (
+              <div className="flex flex-col gap-2 rounded-md border border-red-700 bg-red-700/5 p-2 text-red-400">
+                <p>
+                  Failed to ban the following ids, make sure these users do not
+                  have higher permission levels than the bot.
+                </p>
+                <p>IDs: {failedBans.toString()}</p>
+              </div>
+            )}
             <DataTable data={bansQuery.data} columns={BansTableColumns} />
           </div>
         )}

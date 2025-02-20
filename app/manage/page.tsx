@@ -1,3 +1,3 @@
-import ManageServersPage from "@/src/pages/mange-servers";
+import ManageServersPage from "@/src/pages/manage-servers";
 
 export default ManageServersPage;
