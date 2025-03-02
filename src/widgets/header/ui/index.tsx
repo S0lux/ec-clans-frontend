@@ -61,12 +61,14 @@ export const Header = ({ className }: { className?: string }) => {
 
       {(!loggedInUser || isError) && !isLoading && (
         <>
-          <Button
-            variant="outline"
-            className="hidden h-9 font-bold opacity-50 transition-opacity hover:bg-transparent hover:text-foreground hover:opacity-100 sm:block"
-          >
-            Add to server
-          </Button>
+          <a href={process.env.NEXT_PUBLIC_BOT_INVITE_URL}>
+            <Button
+              variant="outline"
+              className="hidden h-9 font-bold opacity-50 transition-opacity hover:bg-transparent hover:text-foreground hover:opacity-100 sm:block"
+            >
+              Add to server
+            </Button>
+          </a>
 
           <Button
             className="h-9 bg-yellow-700 font-bold hover:bg-yellow-800"
@@ -80,12 +82,14 @@ export const Header = ({ className }: { className?: string }) => {
 
       {loggedInUser && (
         <>
-          <Button
-            variant="outline"
-            className="mr-2 hidden h-9 font-bold opacity-50 transition-opacity hover:bg-transparent hover:text-foreground hover:opacity-100 sm:block"
-          >
-            Manage servers
-          </Button>
+          <a href="/manage">
+            <Button
+              variant="outline"
+              className="mr-2 hidden h-9 font-bold opacity-50 transition-opacity hover:bg-transparent hover:text-foreground hover:opacity-100 sm:block"
+            >
+              Manage servers
+            </Button>
+          </a>
 
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -97,9 +101,11 @@ export const Header = ({ className }: { className?: string }) => {
               <DropdownMenuLabel>{loggedInUser.username}</DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-foreground/50" />
               {loggedInUser.isStaff && (
-                <DropdownMenuItem className="cursor-pointer text-foreground/50">
-                  Admin
-                </DropdownMenuItem>
+                <Link href="/admin/clans">
+                  <DropdownMenuItem className="cursor-pointer text-foreground/50">
+                    Admin
+                  </DropdownMenuItem>
+                </Link>
               )}
               <DropdownMenuItem
                 onClick={handleSignOut}

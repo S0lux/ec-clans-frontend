@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
       await axiosInstance
         .get("/v1/discord-users/me", {
           headers: {
-            Cookie: `better-auth.session_token=${sessionToken.value}`,
+            Cookie: `better-auth.session_token=${encodeURIComponent(sessionToken.value)}`,
           },
         })
         .then(zodValidate(currentDiscordUserDtoSchema))

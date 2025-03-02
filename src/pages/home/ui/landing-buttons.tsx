@@ -35,29 +35,32 @@ export const LandingButtons = () => {
           >
             <p>Login with Discord</p>
           </Button>
-          <Button
-            variant="outline"
-            className="text-md h-12 font-bold hover:bg-foreground/20 hover:text-foreground hover:opacity-100"
-          >
-            Add to server
-          </Button>
+          <a href={process.env.NEXT_PUBLIC_BOT_INVITE_URL}>
+            <Button
+              variant="outline"
+              className="text-md h-12 font-bold hover:bg-foreground/20 hover:text-foreground hover:opacity-100"
+            >
+              Add to server
+            </Button>
+          </a>
         </>
       )}
 
       {loggedInUser && (
         <>
-          <Button
-            className="text-md h-12 bg-yellow-700 font-bold hover:bg-yellow-800"
-            onClick={handleLogin}
-          >
-            <p>Manage servers</p>
-          </Button>
-          <Button
-            variant="outline"
-            className="text-md h-12 font-bold hover:bg-foreground/20 hover:text-foreground hover:opacity-100"
-          >
-            Add to server
-          </Button>
+          <a href="/manage">
+            <Button className="text-md h-12 bg-yellow-700 font-bold hover:bg-yellow-800">
+              <p>Manage servers</p>
+            </Button>
+          </a>
+          <a href={process.env.NEXT_PUBLIC_BOT_INVITE_URL!}>
+            <Button
+              variant="outline"
+              className="text-md h-12 font-bold hover:bg-foreground/20 hover:text-foreground hover:opacity-100"
+            >
+              Add to server
+            </Button>
+          </a>
         </>
       )}
     </div>

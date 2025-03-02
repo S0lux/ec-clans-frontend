@@ -1,6 +1,12 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import { ServerCard } from "./server-card";
+import { ClansQueries } from "@/src/entities/clan/clan.queries";
 
 export const OfficialServersList = () => {
+  const clansQuery = useQuery(ClansQueries.getClansQuery(0, 15, "official"));
+
   return (
     <section className="pt-10 lg:pt-0">
       <h2 className="pb-5 text-3xl font-bold">Official Servers</h2>
@@ -13,60 +19,24 @@ export const OfficialServersList = () => {
         here, please contact a clan staff member.
       </p>
       <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <ServerCard
-          serverName="77th Redcliff Republic"
-          serverLogo="https://placehold.co/400/png"
-          serverBanner="https://placehold.co/1200x400/png"
-          serverInvite="https://discord.gg/placeholder"
-          memberTotal={420}
-          memberOnline={58}
-          shortDescription="A clan dedicated for the ingame faction Redcliff Republic."
-        />
-        <ServerCard
-          serverName="Placeholder"
-          serverLogo="https://placehold.co/400/png"
-          serverBanner="https://placehold.co/1200x400/png"
-          serverInvite="https://discord.gg/placeholder"
-          memberTotal={420}
-          memberOnline={58}
-          shortDescription="Placeholder"
-        />
-        <ServerCard
-          serverName="Placeholder"
-          serverLogo="https://placehold.co/400/png"
-          serverBanner="https://placehold.co/1200x400/png"
-          serverInvite="https://discord.gg/placeholder"
-          memberTotal={420}
-          memberOnline={58}
-          shortDescription="Placeholder"
-        />
-        <ServerCard
-          serverName="Placeholder"
-          serverLogo="https://placehold.co/400/png"
-          serverBanner="https://placehold.co/1200x400/png"
-          serverInvite="https://discord.gg/placeholder"
-          memberTotal={420}
-          memberOnline={58}
-          shortDescription="Placeholder"
-        />
-        <ServerCard
-          serverName="Placeholder"
-          serverLogo="https://placehold.co/400/png"
-          serverBanner="https://placehold.co/1200x400/png"
-          serverInvite="https://discord.gg/placeholder"
-          memberTotal={420}
-          memberOnline={58}
-          shortDescription="Placeholder"
-        />
-        <ServerCard
-          serverName="Placeholder"
-          serverLogo="https://placehold.co/400/png"
-          serverBanner="https://placehold.co/1200x400/png"
-          serverInvite="https://discord.gg/placeholder"
-          memberTotal={420}
-          memberOnline={58}
-          shortDescription="Placeholder"
-        />
+        {clansQuery.data && (
+          <>
+            {clansQuery.data.results
+              .filter((clan) => clan.status == "OFFICIAL")
+              .map((clan) => (
+                <ServerCard
+                  key={clan.serverId}
+                  serverName={clan.serverName}
+                  serverLogo={clan.serverIcon}
+                  serverBanner={clan.serverBanner}
+                  serverInvite={clan.serverInvite}
+                  memberTotal={clan.serverTotalMembers}
+                  memberOnline={clan.serverOnlineMembers}
+                  shortDescription={clan.shortDescription}
+                />
+              ))}
+          </>
+        )}
       </div>
     </section>
   );
