@@ -5,7 +5,13 @@ import { zodValidate } from "./src/shared/lib/axios";
 import { currentDiscordUserDtoSchema } from "./src/shared/api/users/users.dtos";
 
 export async function middleware(request: NextRequest) {
-  const sessionToken = request.cookies.get("better-auth.session_token");
+  const env = process.env.NODE_ENV;
+  const cookieName =
+    env == "production"
+      ? "__Secure-better-auth.session_cookie"
+      : "better-auth.session_token";
+
+  const sessionToken = request.cookies.get(cookieName);
   if (!sessionToken) {
     return NextResponse.redirect(new URL(request.nextUrl.origin));
   }
@@ -15,7 +21,7 @@ export async function middleware(request: NextRequest) {
       await axiosInstance
         .get("/v1/discord-users/me", {
           headers: {
-            Cookie: `better-auth.session_token=${encodeURIComponent(sessionToken.value)}`,
+            Cookie: `${cookieName}=${encodeURIComponent(sessionToken.value)}`,
           },
         })
         .then(zodValidate(currentDiscordUserDtoSchema))
