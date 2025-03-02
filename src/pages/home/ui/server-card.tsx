@@ -19,9 +19,10 @@ export const ServerCard = (props: {
         {props.serverBanner && (
           <Image
             className="h-24 w-full rounded-t-lg object-cover"
-            src={props.serverBanner}
+            src={props.serverBanner + "?size=4096"}
             alt="Server Banner"
             fill={true}
+            quality={100}
           />
         )}
         {!props.serverBanner && (

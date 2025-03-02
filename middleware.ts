@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const cookieName =
     env == "production"
       ? "__Secure-better-auth.session_cookie"
-      : "better-auth.session_token";
+      : "better-auth.session_cookie";
 
   const sessionToken = request.cookies.get(cookieName);
   if (!sessionToken) {
