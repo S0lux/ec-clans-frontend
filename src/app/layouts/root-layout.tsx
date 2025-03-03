@@ -12,7 +12,8 @@ const nunitoSans = Nunito_Sans({
 
 export const metadata: Metadata = {
   title: "Clans | Empire Clash",
-  description: "Empire Clash clans management portal",
+  description:
+    "The essential Discord bot for Empire Clash clan leaders. Streamline member management, track performance stats, coordinate battles, and verify clan qualifications with ease.",
 };
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryProvider>
         <body
-          className={`${nunitoSans.variable} antialiased flex h-screen flex-col`}
+          className={`${nunitoSans.variable} flex h-screen flex-col antialiased`}
         >
           <Header className="sticky left-0 top-0" />
           {children}
