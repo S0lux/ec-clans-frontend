@@ -14,6 +14,8 @@ import { DataTable } from "./data-table";
 import { BansTableColumns } from "./bans-table-columns";
 import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 import { cn } from "@/src/shared/lib";
+import ErrorDisplay from "@/src/shared/ui/error-display";
+import { AxiosError } from "axios";
 
 export default function AdminClanBansPage() {
   const params = useParams<{ clanId: string }>()!;
@@ -22,8 +24,13 @@ export default function AdminClanBansPage() {
     BanQueries.getClanBansQuery(params.clanId),
   );
 
-  if (error) {
-    return <div>Error loading bans list.</div>;
+  if (error instanceof AxiosError) {
+    return (
+      <ErrorDisplay
+        className="rounded-md bg-neutral-900 md:mr-12 lg:mr-24 xl:mr-36 2xl:mr-64"
+        errorMessage={error.response?.data.message}
+      />
+    );
   }
 
   const totalBans = data?.length ?? 0;
