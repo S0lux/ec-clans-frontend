@@ -30,7 +30,7 @@ export const AdminClanList = ({ className }: { className?: string }) => {
   );
 
   const renderClanList = () => {
-    if (clanQuery.isLoading)
+    if (clanQuery.isFetching)
       return <Skeleton className="col-span-full h-48 w-full bg-foreground/5" />;
 
     if (clanQuery.isError)
@@ -76,7 +76,11 @@ export const AdminClanList = ({ className }: { className?: string }) => {
           }
           defaultValue="official"
         >
-          <SelectTrigger className="flex-1 md:min-w-64">
+          <SelectTrigger
+            className={cn("flex-1 md:min-w-64", {
+              "text-orange-500": queryType == "official",
+            })}
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-background text-foreground">
