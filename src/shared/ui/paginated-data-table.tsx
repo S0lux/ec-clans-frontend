@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/src/shared/ui/components/shadcn/table";
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "../../../shared/ui/components/shadcn/button";
+import { Button } from "./components/shadcn/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,7 +27,7 @@ interface DataTableProps<TData, TValue> {
   setPaginationAction: Dispatch<SetStateAction<PaginationState>>;
 }
 
-export function DataTable<TData, TValue>({
+export function PaginatedDataTable<TData, TValue>({
   columns,
   data,
   pageCount,

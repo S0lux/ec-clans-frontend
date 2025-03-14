@@ -23,7 +23,7 @@ export const OfficialServersList = () => {
           <>
             {clansQuery.data.results
               .filter((clan) => clan.status == "OFFICIAL")
-              .map((clan) => (
+              .map((clan, index) => (
                 <ServerCard
                   key={clan.serverId}
                   serverName={clan.serverName}
@@ -33,6 +33,8 @@ export const OfficialServersList = () => {
                   memberTotal={clan.serverTotalMembers}
                   memberOnline={clan.serverOnlineMembers}
                   shortDescription={clan.shortDescription}
+                  rank={index + 1}
+                  points={clan.points}
                 />
               ))}
           </>

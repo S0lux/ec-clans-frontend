@@ -1,12 +1,22 @@
 "use client";
 
-import { ReactNode } from "react";
-import { Gavel, Info, LoaderCircle, LucideIcon, ScanEye } from "lucide-react";
+import { ReactNode, useState } from "react";
+import {
+  ChartColumnIncreasing,
+  Gavel,
+  Info,
+  LoaderCircle,
+  LucideIcon,
+  Menu,
+  ScanEye,
+  X,
+} from "lucide-react";
 import ClanNavButton from "@/src/shared/ui/clan-nav-button";
 import { ClanOverviewCard } from "@/src/widgets/clan-overview-card/ui";
 import { useQuery } from "@tanstack/react-query";
 import { ClansQueries } from "@/src/entities/clan/clan.queries";
 import { useParams, usePathname } from "next/navigation";
+import { cn } from "@/src/shared/lib";
 
 type ClanPathType = "OFFICIAL" | "UNOFFICIAL";
 
@@ -41,6 +51,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       isAvailable: true,
       unavailableMessage: "",
     },
+    {
+      href: "points",
+      icon: ChartColumnIncreasing,
+      label: "Points",
+      isAvailable: true,
+      unavailableMessage: "",
+    },
   ],
   UNOFFICIAL: [
     {
@@ -64,6 +81,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       isAvailable: true,
       unavailableMessage: "",
     },
+    {
+      href: "points",
+      icon: ChartColumnIncreasing,
+      label: "Points",
+      isAvailable: false,
+      unavailableMessage: "This feature is only for official clans",
+    },
   ],
 };
 
@@ -71,6 +95,12 @@ export default function AdminClanLayout({ children }: { children: ReactNode }) {
   const { clanId } = useParams<{ clanId: string }>()!;
   const query = useQuery(ClansQueries.getClanQuery(clanId));
   const pathName = usePathname();
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const renderClanNavMenu = () => {
     if (query.isLoading) {
@@ -104,13 +134,41 @@ export default function AdminClanLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="mt-10 flex h-full w-full flex-col overflow-y-scroll">
-      <ClanOverviewCard clanId={clanId} />
+      <ClanOverviewCard clanId={clanId} className="mb-5 md:mb-10" />
 
-      <div className="flex flex-row gap-2">
-        <nav className="h-min w-full max-w-64 rounded-md bg-neutral-900 py-3 xl:ml-36 xl:px-0 2xl:ml-64 2xl:px-0">
-          {renderClanNavMenu()}
-        </nav>
-        {children}
+      <div className="flex flex-col gap-2 md:flex-row">
+        {!query.isError && (
+          <>
+            {/* Mobile Hamburger Menu Button */}
+            <div className="flex items-center justify-between p-4 pt-0 md:hidden">
+              <button
+                onClick={toggleMobileMenu}
+                className="rounded-md bg-neutral-800 p-2 transition-colors hover:bg-neutral-700"
+                aria-label="Toggle navigation menu"
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+
+            {/* Navigation Menu - Mobile Dropdown / Desktop Sidebar */}
+            <nav
+              className={`${
+                mobileMenuOpen ? "block" : "hidden"
+              } z-10 h-min w-full rounded-md bg-neutral-900 py-3 md:z-auto md:ml-12 md:block md:max-w-64 lg:ml-24 xl:ml-36 2xl:ml-64`}
+            >
+              {renderClanNavMenu()}
+            </nav>
+
+            {/* Main Content */}
+            <div
+              className={cn("w-full md:mr-12 lg:mr-24 xl:mr-36 2xl:mr-64", {
+                "mt-4 md:mt-0": mobileMenuOpen,
+              })}
+            >
+              {children}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

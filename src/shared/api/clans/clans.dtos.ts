@@ -24,6 +24,7 @@ const officialClanDtoSchema = z.object({
   groupId: z.string(),
   longDescription: z.string().optional().nullable(),
   shortDescription: z.string().optional().nullable(),
+  points: z.coerce.number(),
   overseers: z.array(baseDiscordUserDtoSchema),
 });
 
@@ -99,4 +100,24 @@ export const clanPermissionsDtoSchema = z.object({
 export const clanBansResultDtoSchema = z.object({
   bannedUsers: z.string().array(),
   failedUsers: z.string().array(),
+});
+
+export const clanPointsHistoryDtoSchema = z.object({
+  staffUser: baseDiscordUserDtoSchema,
+  reason: z.string(),
+  points: z.number(),
+  issueDate: z.coerce.date(),
+});
+
+export const updateClanPointsSchema = z.object({
+  action: z.enum(["add", "subtract"]),
+  reason: z.string().nonempty(),
+  points: z.number().default(0),
+});
+
+export const clanPointsHistoryListDtoSchema = z.object({
+  totalPages: z.number(),
+  pageNumber: z.number(),
+  pageSize: z.number(),
+  results: clanPointsHistoryDtoSchema.array(),
 });

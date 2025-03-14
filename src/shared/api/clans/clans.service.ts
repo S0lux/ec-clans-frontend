@@ -2,6 +2,7 @@ import { ClansDtos, ClansTypes } from ".";
 import { axiosInstance } from "..";
 import { zodValidate } from "../../lib/axios";
 import { OfficializeClanDto } from "./clans.types";
+import { clanPointsHistoryListDtoSchema } from "@/src/shared/api/clans/clans.dtos";
 
 export class ClansService {
   static async officializeClan(body: OfficializeClanDto) {
@@ -39,10 +40,32 @@ export class ClansService {
     return axiosInstance.patch(`/v1/clans/${clanId}/descriptions`, body);
   }
 
+  static async updatePoints(
+    clanId: string,
+    body: ClansTypes.UpdateClanPointsDto,
+  ) {
+    return axiosInstance.patch(`/v1/clans/${clanId}/points`, body);
+  }
+
   static async getClanPermissions(serverId: string) {
     return axiosInstance
       .get(`/v1/permissions/${serverId}`)
       .then(zodValidate(ClansDtos.clanPermissionsDtoSchema));
+  }
+
+  static async getClanPointsHistory(
+    serverId: string,
+    pageSize: number,
+    pageNumber: number,
+  ) {
+    return axiosInstance
+      .get(`/v1/clans/${serverId}/points-history`, {
+        params: {
+          pageSize: pageSize,
+          pageNumber: pageNumber,
+        },
+      })
+      .then(zodValidate(ClansDtos.clanPointsHistoryListDtoSchema));
   }
 
   static async synchronizeClanBans(serverId: string) {

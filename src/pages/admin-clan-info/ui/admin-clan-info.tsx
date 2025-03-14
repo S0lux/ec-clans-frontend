@@ -17,7 +17,7 @@ import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 export default function AdminClanInfoPage() {
   const params = useParams<{ clanId: string }>();
   const { data, isLoading, isError } = useQuery(
-    ClansQueries.getClanQuery(params?.clanId),
+    ClansQueries.getClanQuery(params?.serverId),
   );
 
   if (!params || !params.clanId) {

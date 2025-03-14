@@ -2,6 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import {
+  ChartColumnIncreasing,
   Gavel,
   Info,
   LoaderCircle,
@@ -58,6 +59,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       isAvailable: true,
       unavailableMessage: "",
     },
+    {
+      href: "points",
+      icon: ChartColumnIncreasing,
+      label: "Points",
+      isAvailable: true,
+      unavailableMessage: "",
+    },
   ],
   UNOFFICIAL: [
     {
@@ -87,6 +95,13 @@ const NAV_ITEMS: Record<ClanPathType, NavItem[]> = {
       label: "Bans",
       isAvailable: true,
       unavailableMessage: "",
+    },
+    {
+      href: "points",
+      icon: ChartColumnIncreasing,
+      label: "Points",
+      isAvailable: false,
+      unavailableMessage: "This feature is only for official clans",
     },
   ],
 };

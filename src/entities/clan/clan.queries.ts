@@ -32,6 +32,25 @@ export class ClansQueries {
     });
   }
 
+  static getClanPointsHistoryQuery(
+    clanId?: string,
+    pageNumber?: number,
+    pageSize?: number,
+  ) {
+    return queryOptions({
+      queryKey: ["points-history", clanId, pageNumber, pageSize],
+      queryFn: async () =>
+        (
+          await ClansService.getClanPointsHistory(
+            clanId!,
+            pageSize || 10,
+            pageNumber || 0,
+          )
+        ).data,
+      enabled: !!clanId,
+    });
+  }
+
   static getUnofficialClanQuery(guildId?: string) {
     return queryOptions({
       queryKey: ["unofficial-clans"],

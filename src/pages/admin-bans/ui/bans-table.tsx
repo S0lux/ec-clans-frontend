@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/src/pages/admin-bans/ui/data-table";
+import { PaginatedDataTable } from "@/src/shared/ui/paginated-data-table";
 import { BansTableColumns } from "./bans-table-columns";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
@@ -18,7 +18,7 @@ export const BansTable = () => {
   );
 
   return (
-    <DataTable
+    <PaginatedDataTable
       columns={BansTableColumns}
       pagination={pagination}
       setPaginationAction={setPagination}
