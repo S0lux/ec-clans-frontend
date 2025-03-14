@@ -34,7 +34,7 @@ export default function AdminClanPointsPage() {
     data: clanData,
     isLoading: clanLoading,
     isError: clanError,
-  } = useQuery(ClansQueries.getClanQuery(params?.serverId));
+  } = useQuery(ClansQueries.getClanQuery(params?.clanId));
 
   const {
     data: pointsHistory,
@@ -43,7 +43,7 @@ export default function AdminClanPointsPage() {
     error: historyErrorDetails,
   } = useQuery(
     ClansQueries.getClanPointsHistoryQuery(
-      params?.serverId,
+      params?.clanId,
       pagination.pageIndex,
       pagination.pageSize,
     ),

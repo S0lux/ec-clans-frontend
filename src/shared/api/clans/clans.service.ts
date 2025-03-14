@@ -2,7 +2,6 @@ import { ClansDtos, ClansTypes } from ".";
 import { axiosInstance } from "..";
 import { zodValidate } from "../../lib/axios";
 import { OfficializeClanDto } from "./clans.types";
-import { clanPointsHistoryListDtoSchema } from "@/src/shared/api/clans/clans.dtos";
 
 export class ClansService {
   static async officializeClan(body: OfficializeClanDto) {
