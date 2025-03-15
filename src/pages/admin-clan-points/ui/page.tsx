@@ -125,10 +125,10 @@ export default function AdminClanPointsPage() {
               <span className="w-24 text-nowrap">Points:</span>
               <Input
                 type="number"
-                min="1"
+                step={"0.01"}
                 placeholder={"The number of points"}
                 value={points || ""}
-                onChange={(e) => setPoints(parseInt(e.target.value) || 0)}
+                onChange={(e) => setPoints(parseFloat(e.target.value) || 0)}
               />
             </div>
 

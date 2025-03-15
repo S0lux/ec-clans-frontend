@@ -105,7 +105,7 @@ export const clanBansResultDtoSchema = z.object({
 export const clanPointsHistoryDtoSchema = z.object({
   staffUser: baseDiscordUserDtoSchema,
   reason: z.string(),
-  points: z.number(),
+  points: z.coerce.number(),
   issueDate: z.coerce.date(),
 });
 

@@ -1,8 +1,9 @@
 import { cn } from "@/src/shared/lib";
 import { Button } from "@/src/shared/ui/components/shadcn/button";
-import { Circle, Users } from "lucide-react";
+import { Circle, ExternalLink, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { LevelDisplay } from "@/src/shared/ui/level-display";
 
 export const ServerCard = (props: {
   serverName: string;
@@ -15,44 +16,43 @@ export const ServerCard = (props: {
   points?: number;
   rank?: number;
 }) => {
+  console.log("Rendering Server Card");
   const isTopThree = props.rank !== undefined && props.rank <= 3;
 
   const getRankStyles = () => {
     if (props.rank === 1) {
       return {
-        badgeColor: "bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600",
-        borderColor: "outline-2 outline-yellow-300/50",
-        glow: "shadow-[0_0_15px_rgba(234,179,8,0.7),0_0_30px_rgba(234,179,8,0.4)]",
-        animation: "",
-        textColor: "text-yellow-100",
-        shape: "clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)"
+        badgeColor:
+          "bg-gradient-to-br from-amber-300 via-yellow-400 to-yellow-500",
+        borderColor: "ring-yellow-300/50",
+        glow: "shadow-lg shadow-yellow-400/20",
+        textColor: "text-yellow-900 font-black",
+        ribbonColor: "from-yellow-400 to-yellow-500",
       };
     } else if (props.rank === 2) {
       return {
-        badgeColor: "bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400",
-        borderColor: "outline-2 outline-gray-200/50",
-        glow: "shadow-[0_0_12px_rgba(209,213,219,0.6),0_0_25px_rgba(209,213,219,0.3)]",
-        animation: "",
-        textColor: "text-gray-900",
-        shape: "clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)"
+        badgeColor: "bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300",
+        borderColor: "ring-gray-200/50",
+        glow: "shadow-lg shadow-gray-400/20",
+        textColor: "text-gray-800 font-black",
+        ribbonColor: "from-gray-300 to-gray-400",
       };
     } else if (props.rank === 3) {
       return {
-        badgeColor: "bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700",
-        borderColor: "outline-2 outline-amber-400/50",
-        glow: "shadow-[0_0_10px_rgba(217,119,6,0.6),0_0_20px_rgba(217,119,6,0.3)]",
-        animation: "",
-        textColor: "text-amber-100",
-        shape: "clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)"
+        badgeColor:
+          "bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600",
+        borderColor: "ring-amber-400/50",
+        glow: "shadow-lg shadow-amber-500/20",
+        textColor: "text-amber-900 font-black",
+        ribbonColor: "from-amber-500 to-amber-600",
       };
     }
     return {
       badgeColor: "bg-gray-700",
-      borderColor: "outline outline-background",
+      borderColor: "ring-background",
       glow: "",
-      animation: "",
       textColor: "text-gray-300",
-      shape: "rounded-full"
+      ribbonColor: "from-gray-700 to-gray-800",
     };
   };
 
@@ -61,107 +61,115 @@ export const ServerCard = (props: {
   return (
     <div
       className={cn(
-        "relative flex h-full flex-col rounded-lg bg-background shadow-lg transition-all duration-300",
+        "group relative flex h-full flex-col overflow-hidden rounded-xl bg-background/90 backdrop-blur-sm transition-all duration-300",
         {
           [styles.glow]: isTopThree,
-          "hover:scale-105 hover:shadow-2xl": isTopThree,
-          [styles.animation]: isTopThree,
-        }
+          "hover:translate-y-[-4px]": true,
+          "border border-muted-foreground/10": true,
+        },
       )}
     >
-      {/* Rank Badge */}
-      {props.rank !== undefined && (
+      {/* Rank Badge/Ribbon for top 3 */}
+      {isTopThree && (
         <div
           className={cn(
-            "absolute rounded-full -right-3 -top-3 z-10 flex h-10 w-10 items-center justify-center text-sm font-extrabold transition-transform hover:scale-125 hover:rotate-12",
-            styles.badgeColor,
-            styles.borderColor,
-            styles.shape,
-            styles.textColor,
-            "outline outline-offset-2"
+            "absolute -right-[2rem] top-[1.5rem] z-10 w-36 rotate-45 bg-gradient-to-r py-1 text-center shadow-lg",
+            styles.ribbonColor,
+            "transition-all duration-300 group-hover:shadow-lg",
           )}
         >
-          <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)] text-md">
+          <span className={cn("text-md font-bold", styles.textColor)}>
             #{props.rank}
           </span>
         </div>
       )}
 
-      <div className="relative h-32 overflow-hidden">
+      {/* Regular rank badge for others */}
+      {props.rank !== undefined && !isTopThree && (
+        <div
+          className={cn(
+            "text-md absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold",
+            styles.badgeColor,
+            "ring-2 ring-offset-2",
+            styles.borderColor,
+            styles.textColor,
+          )}
+        >
+          #{props.rank}
+        </div>
+      )}
+
+      <div className="relative h-36 overflow-hidden">
         {props.serverBanner ? (
           <Image
-            className={cn(
-              "h-24 w-full rounded-t-lg object-cover transition-transform duration-500",
-              { "hover:scale-110 brightness-110": isTopThree }
-            )}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-110"
             src={props.serverBanner + "?size=4096"}
-            alt="Server Banner"
+            alt={`${props.serverName} banner`}
             fill={true}
-            quality={100}
+            quality={90}
           />
         ) : (
+          <div className="h-full w-full bg-gradient-to-r from-yellow-700 to-yellow-800"></div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
+      </div>
+
+      <div className="absolute left-6 top-20 z-20 transition-all duration-300 group-hover:scale-105">
+        <div
+          className={cn("rounded-full", {
+            "ring-2 ring-offset-2 ring-offset-background": isTopThree,
+            "ring-yellow-400/30": props.rank === 1,
+            "ring-gray-300/30": props.rank === 2,
+            "ring-amber-500/30": props.rank === 3,
+          })}
+        >
           <Image
-            className="h-24 w-full rounded-t-lg object-cover"
-            src={"https://placehold.co/600x400/png"}
-            alt="Server Banner"
-            fill={true}
+            className="rounded-full"
+            src={props.serverLogo}
+            alt={`${props.serverName} logo`}
+            width={72}
+            height={72}
           />
-        )}
+        </div>
       </div>
 
-      <div
-        className={cn(
-          "absolute left-7 top-24 rounded-full transition-all z-50",
-          {
-            "ring-4 ring-opacity-70": isTopThree,
-            "ring-yellow-400": props.rank === 1,
-            "ring-gray-300": props.rank === 2,
-            "ring-amber-500": props.rank === 3,
-          }
-        )}
-      >
-        <Image
-          className={cn(
-            "scale-125 rounded-full outline outline-4 outline-background z-50",
-            { "hover:scale-130": isTopThree }
-          )}
-          src={props.serverLogo}
-          alt="Server Logo"
-          width={64}
-          height={64}
-        />
-      </div>
+      <div className="flex flex-1 flex-col p-5 pt-6">
+        <div className="mb-3 flex-1">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col items-start justify-between gap-2">
+              <h3 className="line-clamp-2 max-w-[70%] text-lg font-bold tracking-tight">
+                {props.serverName}
+              </h3>
+            </div>
+          </div>
 
-      <div className="flex flex-1 flex-col p-5 pt-12">
-        <div className="flex-1">
-          <div className="flex items-center">
-            <h3 className="text-xl font-semibold">{props.serverName}</h3>
+          <div className="mt-2 flex flex-row gap-4">
+            <div className="flex items-center">
+              <Users size={14} className="text-muted-foreground" />
+              <p className="ml-1 text-xs font-medium text-muted-foreground">
+                {props.memberTotal.toLocaleString()}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <Circle size={14} className="fill-green-500 text-green-500" />
+              <p className="ml-1 text-xs font-medium text-muted-foreground">
+                {props.memberOnline.toLocaleString()}
+              </p>
+            </div>
             {props.points !== undefined && (
-              <span className="ml-2 text-sm text-foreground/70">
-                {props.points} pts
-              </span>
+              <LevelDisplay
+                points={props.points}
+                mode="compact"
+                className="flex-shrink-0"
+              />
             )}
           </div>
-
-          <div className="flex flex-row gap-4">
-            <div className="flex items-center">
-              <Users size={16} className="text-foreground/50" />
-              <p className="ml-1 text-sm text-foreground/50">
-                {props.memberTotal}
-              </p>
-            </div>
-            <div className="flex items-center">
-              <Circle size={16} color="#4ade80" fill="#4ade80" />
-              <p className="ml-1 text-sm text-foreground/50">
-                {props.memberOnline}
-              </p>
-            </div>
-          </div>
-          <p className="pt-2 text-sm text-foreground/50">
-            {props.shortDescription || "No description"}
+          <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">
+            {props.shortDescription || "No description available"}
           </p>
         </div>
-        <div className="flex justify-end pt-4">
+
+        <div className="flex justify-end pt-2">
           <Link
             prefetch={false}
             href={`https://discord.gg/${props.serverInvite}`}
@@ -169,14 +177,15 @@ export const ServerCard = (props: {
             target="_blank"
           >
             <Button
+              variant="default"
               className={cn(
-                "font-bold",
-                "bg-yellow-700 hover:bg-yellow-800",
-                { "hover:scale-105 transition-transform": isTopThree }
+                "group relative flex items-center gap-1.5 overflow-hidden bg-yellow-700 font-bold hover:bg-yellow-800",
               )}
               disabled={!props.serverInvite}
             >
-              Join
+              <span>Join</span>
+              <ExternalLink size={14} className="opacity-70" />
+              <span className="group-hover:animate-shimmer absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></span>
             </Button>
           </Link>
         </div>

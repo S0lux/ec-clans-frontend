@@ -6,6 +6,7 @@ import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 import ErrorDisplay from "@/src/shared/ui/error-display";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { LevelDisplay } from "@/src/shared/ui/level-display";
 
 export const ClanOverviewCard = ({
   clanId,
@@ -86,17 +87,18 @@ export const ClanOverviewCard = ({
           </span>
         )}
 
-        {/* Clan member count */}
+        {/* Clan level - Now using our unified LevelDisplay component */}
         {isLoading && (
-          <Skeleton className="hidden h-5 w-24 bg-foreground/10 sm:block" />
+          <Skeleton className="hidden h-5 w-36 bg-foreground/10 sm:block" />
         )}
         {data && (
-          <span className="hidden text-sm text-foreground/50 sm:block">
-            Members:{" "}
-            <span className="font-medium text-foreground/80">
-              {data.serverTotalMembers}
-            </span>
-          </span>
+          <div className="hidden sm:block">
+            <LevelDisplay
+              points={data.status == "OFFICIAL" ? data.points : 0}
+              mode="bar"
+              status={data.status}
+            />
+          </div>
         )}
       </div>
     </div>
