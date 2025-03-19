@@ -26,8 +26,8 @@ export const OfficialServersList = () => {
               .filter((clan) => clan.status == "OFFICIAL")
               .sort((clanA, clanB) => {
                 if (clanA.points != clanB.points)
-                  return clanA.points - clanB.points;
-                else return clanA.serverTotalMembers - clanB.serverTotalMembers;
+                  return clanB.points - clanA.points;
+                else return clanB.serverTotalMembers - clanA.serverTotalMembers;
               })
               .map((clan, index) => (
                 <ServerCard
