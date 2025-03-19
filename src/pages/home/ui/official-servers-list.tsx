@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ServerCard } from "./server-card";
 import { ClansQueries } from "@/src/entities/clan/clan.queries";
+import { Skeleton } from "@/src/shared/ui/components/shadcn/skeleton";
 
 export const OfficialServersList = () => {
   const clansQuery = useQuery(ClansQueries.getClansQuery(0, 15, "official"));
@@ -36,6 +37,15 @@ export const OfficialServersList = () => {
                   rank={index + 1}
                   points={clan.points}
                 />
+              ))}
+          </>
+        )}
+        {clansQuery.isLoading && (
+          <>
+            {Array(3)
+              .fill(null)
+              .map((_, index) => (
+                <Skeleton className="h-[358px] bg-foreground/5" key={index} />
               ))}
           </>
         )}
