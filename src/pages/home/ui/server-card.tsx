@@ -16,7 +16,6 @@ export const ServerCard = (props: {
   points?: number;
   rank?: number;
 }) => {
-  console.log("Rendering Server Card");
   const isTopThree = props.rank !== undefined && props.rank <= 3;
 
   const getRankStyles = () => {
@@ -109,7 +108,7 @@ export const ServerCard = (props: {
             quality={90}
           />
         ) : (
-          <div className="h-full w-full bg-gradient-to-r from-yellow-700 to-yellow-800"></div>
+          <div className="h-full w-full bg-gradient-to-r from-yellow-700 to-transparent"></div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
       </div>
