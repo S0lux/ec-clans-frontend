@@ -90,7 +90,6 @@ export const AdminClanList = ({ className }: { className?: string }) => {
     return (
       <div className="mt-6 flex items-center justify-center gap-2">
         <Button
-          variant=""
           size="icon"
           onClick={handlePreviousPage}
           disabled={currentPage === 0}
@@ -126,7 +125,6 @@ export const AdminClanList = ({ className }: { className?: string }) => {
         </div>
 
         <Button
-          variant=""
           size="icon"
           onClick={handleNextPage}
           disabled={currentPage >= totalPages - 1}
