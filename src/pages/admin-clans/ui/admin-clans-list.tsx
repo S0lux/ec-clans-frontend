@@ -113,10 +113,13 @@ export const AdminClanList = ({ className }: { className?: string }) => {
             return (
               <Button
                 key={pageToShow}
-                variant={currentPage === pageToShow ? "default" : "outline"}
+                variant="default"
                 size="sm"
                 onClick={() => setCurrentPage(pageToShow)}
-                className="h-8 w-8 p-0"
+                className={cn(
+                  "h-8 w-8 p-0",
+                  currentPage != pageToShow && "text-neutral-600",
+                )}
               >
                 {pageToShow + 1}
               </Button>
